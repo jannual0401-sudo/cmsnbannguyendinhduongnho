@@ -8,18 +8,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS của bạn đã rất đẹp, tôi sẽ giữ nguyên toàn bộ */
+        /* CSS của bạn đã rất tốt, tôi giữ lại và tối ưu một vài điểm nhỏ */
         :root {
             --primary-color: #FF69B4;
             --secondary-color: #FFC0CB;
             --background-color: #FFF5EE;
             --text-color: #4A4A4A;
         }
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
         body {
             font-family: 'Quicksand', sans-serif; background-color: var(--background-color);
-            color: var(--text-color); margin: 0; padding: 0; display: flex;
-            justify-content: center; align-items: center; height: 100vh; overflow: hidden;
-            transition: background-color 1s ease;
+            color: var(--text-color); margin: 0; padding: 15px; display: flex;
+            justify-content: center; align-items: center; min-height: 100vh; overflow: hidden;
+            transition: background-color 1s ease; text-align: center;
         }
         .hidden { display: none !important; }
         .modal {
@@ -31,7 +37,7 @@
         .modal.show { opacity: 1; visibility: visible; }
         .modal-content {
             background: #FFFFFF; padding: 25px 30px; border-radius: 20px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             max-width: 90%; width: 450px; transform: scale(0.9);
             transition: transform 0.4s ease;
         }
@@ -42,63 +48,133 @@
             font-family: 'Quicksand', sans-serif; transition: background 0.3s ease, transform 0.2s ease;
         }
         button:hover { background: #FF1493; transform: translateY(-3px) scale(1.05); }
-        #lock-screen { text-align: center; width: 100%; }
-        .heart-lock { position: relative; width: 500px; height: 450px; margin: 0 auto; }
-        .heart { fill: var(--secondary-color); stroke: var(--primary-color); stroke-width: 4; animation: pulse 1.5s infinite ease-in-out; }
+        #lock-screen { width: 100%; }
+        .heart-lock { position: relative; width: 300px; height: 270px; margin: 20px auto; }
+        .heart { fill: var(--secondary-color); stroke: var(--primary-color); stroke-width: 3; animation: pulse 1.5s infinite ease-in-out; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-        .digits { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 15px; }
+        .digits { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 10px; }
         .digit-container { display: flex; flex-direction: column; align-items: center; }
         .digit {
             background: #FFFFFF; border: 2px solid var(--primary-color); border-radius: 8px;
-            width: 40px; height: 50px; display: flex; align-items: center;
-            justify-content: center; font-weight: bold; font-size: 24px; margin: 5px 0;
+            width: 30px; height: 40px; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; font-size: 18px; margin: 3px 0;
         }
-        .arrow-btn { background: transparent; color: var(--primary-color); border: none; padding: 5px; font-size: 20px; cursor: pointer; }
-        #hint { margin-top: 20px; font-size: 16px; color: var(--primary-color); cursor: pointer; font-weight: bold; }
-        .welcome-text { font-size: 2.5em; font-family: 'Pacifico', cursive; color: var(--primary-color); text-shadow: 0 3px 6px rgba(0,0,0,0.1); animation: fadeIn-Up 1.5s ease-out forwards; }
-        .welcome-text p { margin: 10px 0; font-family: 'Quicksand', sans-serif; font-size: 0.5em; font-weight: 500; color: #555; }
-        @keyframes fadeIn-Up { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
-        #energy-bar { position: fixed; top: 20px; right: 20px; width: 150px; height: 15px; background: #F0F0F0; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .bar { height: 100%; background: linear-gradient(to right, #76E071, #38A333); transition: width 1s ease; }
-        #avatar-container { position: fixed; top: 20px; left: 20px; z-index: 999; }
-        #avatar { width: 50px; height: 50px; background-image: url('https://i.imgur.com/6bH0j8v.png'); background-size: cover; border-radius: 50%; cursor: pointer; border: 3px solid var(--secondary-color); }
-        #tram1 { width: 100%; max-width: 600px; margin: auto; text-align: center; }
-        #announce { font-size: 2.5em; font-family: 'Pacifico', cursive; color: var(--primary-color); }
+        .arrow-btn { background: transparent; color: var(--primary-color); border: none; padding: 3px; font-size: 16px; cursor: pointer; }
+        #hint { margin-top: 20px; font-size: 14px; color: var(--primary-color); cursor: pointer; font-weight: bold; }
+        /* SỬA LỖI 4: Cải thiện hiển thị trang chào mừng trên mobile */
+        #welcome { opacity: 0; transition: opacity 1s ease; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
+        #welcome.show { opacity: 1; }
+        .welcome-text { font-size: 2em; font-family: 'Pacifico', cursive; color: var(--primary-color); text-shadow: 0 2px 4px rgba(0,0,0,0.1); animation: fadeIn-Up 1.5s ease-out forwards; }
+        .welcome-text p { margin: 5px 0; font-family: 'Quicksand', sans-serif; font-size: 0.6em; font-weight: 500; color: #555; }
+        @keyframes fadeIn-Up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        #energy-bar { position: fixed; top: 10px; right: 10px; width: 100px; height: 10px; background: #F0F0F0; border-radius: 5px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.1); z-index: 1000; }
+        .bar { height: 100%; background: linear-gradient(to right, #76E071, #38A333); transition: width 1s ease, background-color 1s ease; }
+        .bar.flashing { animation: flash 1s infinite; }
+        @keyframes flash { 0%, 100% { background: #ff4d4d; } 50% { background: #ffb3b3; } }
+        #avatar-container { position: fixed; top: 10px; left: 10px; z-index: 1000; }
+        #avatar { width: 30px; height: 30px; background-image: url('https://i.imgur.com/6bH0j8v.png'); background-size: cover; border-radius: 50%; cursor: pointer; border: 2px solid var(--secondary-color); }
+        .arrow-hint { position: absolute; top: -5px; left: 40px; background: white; padding: 3px 6px; border-radius: 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); white-space: nowrap; animation: fadeIn-Up 1s 2s ease-out forwards; opacity:0; font-size: 0.8em; }
+        #tram1 { width: 90%; max-width: 400px; margin: 20px auto; }
+        #announce-container { margin-bottom: 15px; }
+        #announce { font-size: 1.8em; font-family: 'Pacifico', cursive; color: var(--primary-color); }
         .newspapers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10; }
-        .newspaper { position: absolute; width: 250px; background: #fdf5e6; border: 1px solid #ccc; padding: 10px; font-family: 'Times New Roman', Times, serif; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(-150vw) rotateY(60deg); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(0deg) rotateZ(var(--rotation)); } }
-        .like-container { margin-top: 10px; font-size: 1.2em; font-weight: bold; position: relative; }
-        .flying-heart { position: absolute; bottom: 0; left: 50%; font-size: 24px; pointer-events: none; animation: floatHeart 1.5s ease-out forwards; }
-        @keyframes floatHeart { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-150px) scale(0.5) translateX(var(--x-end)); } }
-        #memories { width: 100%; }
-        .cat { font-size: 3em; text-align: center; font-family: 'Pacifico', cursive; color: var(--primary-color); }
-        .clouds { position: relative; width: 90%; max-width: 1000px; height: 60vh; margin: 20px auto; }
-        .cloud { position: absolute; width: 200px; height: 120px; background: #fff; border-radius: 100px; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: float 8s infinite ease-in-out; }
+        .newspaper { position: absolute; width: 60%; min-width: 200px; background: #fdf5e6; border: 1px solid #ccc; padding: 8px; font-family: 'Times New Roman', Times, serif; box-shadow: 3px 3px 10px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(-150vw) rotateY(60deg) scale(0.7); } 70% { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(-10deg) rotateZ(var(--rotation)) scale(1); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(0deg) rotateZ(var(--rotation)) scale(1); } }
+        #main-tram1 img { max-width: 100%; border-radius: 10px; margin-bottom: 10px; }
+        #music-player { width: 100%; }
+        .like-container { margin-top: 10px; font-size: 1em; font-weight: bold; position: relative; min-height: 50px; }
+        #like-count { color: var(--primary-color); font-size: 1.2em; }
+        .flying-heart { position: absolute; bottom: 0; left: 50%; font-size: 18px; pointer-events: none; animation: floatHeart 1.5s ease-out forwards; }
+        @keyframes floatHeart { from { opacity: 1; transform: translateY(0) translateX(-50%) scale(1) rotate(0); } to { opacity: 0; transform: translateY(-100px) translateX(calc(-50% + var(--x-end))) scale(0.5) rotate(var(--rot-end)); } }
+        #memories { width: 90%; max-width: 400px; margin: 20px auto; }
+        .cat { font-size: 2.5em; text-align: center; font-family: 'Pacifico', cursive; color: var(--primary-color); margin-bottom: 15px; }
+        .clouds { position: relative; width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center; gap: 15px; }
+        .cloud { position: relative !important; width: 45%; min-width: 100px; height: auto; aspect-ratio: 2 / 1.2; background: #fff; border-radius: 50px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease; animation: float 5s infinite ease-in-out; }
         .cloud:before, .cloud:after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
-        .cloud:before { width: 120px; height: 120px; top: -60px; left: 20px; }
-        .cloud:after { width: 80px; height: 80px; top: -40px; right: 20px; }
-        .cloud:hover { transform: scale(1.1) translateY(-10px); }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        .cloud.c1 { top: 10%; left: 10%; animation-delay: -2s; } .cloud.c2 { top: 40%; left: 25%; animation-delay: -4s; } .cloud.c3 { top: 20%; left: 60%; animation-delay: 0s; } .cloud.c4 { top: 50%; left: 75%; animation-delay: -6s; }
-        .dim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 2s ease; }
-        .dim-overlay.dim { opacity: 1; pointer-events: all; }
-        #game-section { position: relative; z-index: 501; text-align: center; }
-        #game-canvas { border: 3px solid var(--primary-color); background: #FFF0F5; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: none; }
-        #summon-assistant-btn { margin-top: 15px; background-color: #4ab3ff; }
+        .cloud:before { width: 60%; height: 100%; top: -20%; left: 15%; }
+        .cloud:after { width: 40%; height: 60%; top: -10%; right: 15%; }
+        .cloud:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        #photo-viewer .modal-content { padding: 15px; }
+        #photo-viewer img { max-width: 95%; max-height: 70vh; border-radius: 8px; }
+        #tram4 { width: 90%; max-width: 400px; margin: 20px auto; }
+        #game-section { position: relative; z-index: 501; }
+        #game-canvas { border: 2px solid var(--primary-color); background: #FFF0F5; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: none; width: 100% !important; height: auto !important; aspect-ratio: 5 / 4; display: block; margin: 0 auto; }
+        #game-info { color: white; font-size: 1em; margin-bottom: 8px; }
+        #summon-assistant-btn { margin-top: 10px; background-color: #4ab3ff; padding: 8px 16px; font-size: 0.9em; }
         #summon-assistant-btn:hover { background-color: #0088ff; }
-        .copy-code { color: #FF1493; text-decoration: underline; cursor: pointer; font-weight: bold; background: #eee; padding: 5px; border-radius: 5px; }
-        .chest-container { perspective: 1000px; }
-        .chest { width: 200px; height: 160px; background: linear-gradient(#DAA520, #FFD700); margin: 30px auto; border-radius: 10px; position: relative; transform-style: preserve-3d; transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); cursor: pointer; }
-        .chest:before { content: ''; position: absolute; top: -10px; left: 10%; width: 80%; height: 20px; background: #B8860B; border-radius: 5px; }
+        #open-gift { margin-top: 10px; padding: 10px 20px; font-size: 1em; }
+        .dim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+        .dim-overlay.dim { opacity: 1; pointer-events: all; }
+        #phase3 { width: 90%; max-width: 400px; margin: 20px auto; }
+        #treasure { text-align: center; }
+        .chest-container { perspective: 800px; margin-bottom: 20px; display: inline-block; }
+        .chest { width: 150px; height: 120px; background: linear-gradient(#DAA520, #FFD700); border-radius: 8px; position: relative; transform-style: preserve-3d; transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); cursor: pointer; }
+        .chest:before { content: ''; position: absolute; top: -8px; left: 10%; width: 80%; height: 15px; background: #B8860B; border-radius: 4px; }
         .chest.open { transform: rotateX(45deg); }
-        .light-beam { position: absolute; top: 50%; left: 50%; width: 400px; height: 500px; background: radial-gradient(circle, rgba(255, 255, 224, 0.7) 0%, rgba(255, 255, 224, 0) 70%); transform: translate(-50%, -100%) scaleY(0); transform-origin: bottom center; opacity: 0; transition: transform 1s 0.5s ease-out, opacity 1s 0.5s ease-out; z-index: -1;}
+        .light-beam { position: absolute; top: 50%; left: 50%; width: 300px; height: 400px; background: radial-gradient(circle, rgba(255, 255, 224, 0.7) 0%, rgba(255, 255, 224, 0) 70%); transform: translate(-50%, -100%) scaleY(0); transform-origin: bottom center; opacity: 0; transition: transform 1s 0.5s ease-out, opacity 1s 0.5s ease-out; z-index: -1;}
         .chest.open + .light-beam { transform: translate(-50%, -100%) scaleY(1); opacity: 1; }
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 8px; z-index: 2000; opacity: 0; transition: opacity 0.5s; }
-        @media (max-width: 768px) {
-            .heart-lock { width: 320px; height: 280px; } .digit { width: 30px; height: 40px; }
-            .welcome-text { font-size: 1.8em; }
-            .clouds { height: auto; display: flex; flex-direction: column; align-items: center; gap: 40px; position: relative; }
-            .cloud { position: static !important; }
+        #rewards { opacity: 0; animation: fadeIn-Up 1s 1s forwards; text-align: center; }
+        #rewards h2 { font-size: 1.5em; margin-bottom: 10px; color: var(--primary-color); }
+        .reward2 img { max-width: 80%; border-radius: 8px; margin-top: 10px; }
+        .reward2 p { font-size: 0.9em; font-weight: 500; margin-top: 8px; }
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 8px 16px; border-radius: 6px; z-index: 2000; opacity: 0; transition: opacity 0.3s; font-size: 0.9em; }
+        .modal-content p { font-size: 1em; }
+        .modal-content h2 { font-size: 1.3em; color: var(--primary-color); }
+        .copy-code { color: #FF1493; text-decoration: underline; cursor: pointer; font-weight: bold; background: #eee; padding: 3px; border-radius: 3px; font-size: 0.8em; }
+        #pass-input2 { width: 70%; padding: 6px; margin-top: 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9em; }
+        #submit-pass2 { margin-top: 8px; padding: 8px 16px; font-size: 0.9em; }
+        #notify-pop .modal-content { cursor: pointer; }
+        #notify-continue-pop .modal-content { font-size: 1em; }
+        #notify-continue-pop .modal-content button { margin-top: 10px; }
+        @media (min-width: 769px) {
+            body { padding: 0; }
+            .heart-lock { width: 500px; height: 450px; margin: 0 auto; }
+            .digits { gap: 15px; }
+            .digit { width: 40px; height: 50px; font-size: 24px; margin: 5px 0; }
+            .arrow-btn { padding: 5px; font-size: 20px; }
+            #hint { font-size: 16px; }
+            .welcome-text { font-size: 2.5em; }
+            .welcome-text p { font-size: 0.5em; }
+            #energy-bar { top: 20px; right: 20px; width: 150px; height: 15px; border-radius: 10px; }
+            #avatar-container { top: 20px; left: 20px; }
+            #avatar { width: 50px; height: 50px; border: 3px solid var(--secondary-color); }
+            .arrow-hint { top: 5px; left: 60px; padding: 5px 10px; border-radius: 10px; font-size: 1em; }
+            #tram1 { max-width: 600px; }
+            #announce { font-size: 2.5em; }
+            .newspaper { width: 250px; padding: 10px; }
+            #main-tram1 img { margin-bottom: 15px; }
+            .like-container { font-size: 1.2em; }
+            #like-count { font-size: 1.5em; }
+            .flying-heart { font-size: 24px; }
+            #memories { max-width: 1000px; }
+            .cat { font-size: 3em; margin-bottom: 20px; }
+            .clouds { flex-direction: row; flex-wrap: nowrap; justify-content: space-around; gap: 20px; height: 60vh; align-items: stretch; }
+            .cloud { position: absolute !important; width: 200px; aspect-ratio: auto; animation-duration: 8s; }
+            .cloud:hover { transform: scale(1.1) translateY(-10px); }
+            @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+            .cloud.c1 { top: 10%; left: 10%; animation-delay: -2s; } .cloud.c2 { top: 40%; left: 25%; animation-delay: -4s; } .cloud.c3 { top: 20%; left: 60%; animation-delay: 0s; } .cloud.c4 { top: 50%; left: 75%; animation-delay: -6s; }
+            #photo-viewer .modal-content { padding: 25px 30px; }
+            #photo-viewer img { max-width: 90%; max-height: 80vh; border-radius: 10px; }
+            #tram4 { max-width: 600px; }
+            #game-canvas { border: 3px solid var(--primary-color); border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); aspect-ratio: 500 / 400; }
+            #game-info { font-size: 1.2em; margin-bottom: 10px; }
+            #summon-assistant-btn { margin-top: 15px; padding: 12px 24px; font-size: 1em; }
+            #open-gift { margin-top: 15px; padding: 12px 24px; font-size: 1em; }
+            .dim-overlay { background: rgba(0,0,0,0.8); }
+            #phase3 { max-width: 600px; }
+            .chest-container { perspective: 1000px; margin-bottom: 30px; }
+            .chest { width: 200px; height: 160px; border-radius: 10px; }
+            .chest:before { top: -10px; height: 20px; border-radius: 5px; }
+            #rewards h2 { font-size: 2em; margin-bottom: 15px; }
+            .reward2 img { max-width: 90%; border-radius: 10px; margin-top: 15px; }
+            .reward2 p { font-size: 1.1em; margin-top: 10px; }
+            #toast { bottom: 30px; padding: 10px 20px; border-radius: 8px; font-size: 1em; }
+            .modal-content p { font-size: 1.2em; }
+            .modal-content h2 { font-size: 1.5em; }
+            .copy-code { padding: 5px; border-radius: 5px; font-size: 1em; }
+            #pass-input2 { width: 80%; padding: 8px; margin-top: 10px; border-radius: 5px; font-size: 1em; }
+            #submit-pass2 { margin-top: 10px; padding: 10px 20px; font-size: 1em; }
         }
     </style>
 </head>
@@ -125,12 +201,12 @@
         </div>
         <div class="newspapers hidden"></div>
         <div id="main-tram1" class="hidden">
-            <img src="https://i.imgur.com/uR6G6dY.jpeg" alt="BTS Lineup" style="max-width:100%; border-radius:10px; margin-bottom: 15px;">
-            <audio id="music-player" controls loop style="width: 100%;"><source src="https://cdn.glitch.global/c31a147a-0552-411a-9694-88623b3a0323/dynamite.mp3?v=1670322744883" type="audio/mpeg"></audio>
+            <img src="https://i.imgur.com/uR6G6dY.jpeg" alt="BTS Lineup">
+            <audio id="music-player" controls loop><source src="https://cdn.glitch.global/c31a147a-0552-411a-9694-88623b3a0323/dynamite.mp3?v=1670322744883" type="audio/mpeg"></audio>
             <div class="like-container">
                 <div id="like-count">0 thả tim</div>
             </div>
-            <button id="next2" style="margin-top: 20px;">Tiếp tục hành trình</button>
+            <button id="next2" style="margin-top: 15px;">Tiếp tục hành trình</button>
         </div>
     </div>
     
@@ -143,7 +219,7 @@
                 <div class="cloud c3" data-photo="https://i.imgur.com/3q1Z03R.jpeg"></div>
                 <div class="cloud c4" data-photo="https://i.imgur.com/hCFy9Y5.jpeg"></div>
             </div>
-            <div style="text-align: center; margin-top: 20px;">
+            <div style="text-align: center; margin-top: 15px;">
                 <button id="next4" class="hidden">Đến trạm nghỉ chân</button>
             </div>
         </div>
@@ -153,7 +229,7 @@
         <div class="dim-overlay"></div>
         <div id="game-section" class="hidden">
             <h2 style="color: white;">Nạp Năng Lượng!</h2>
-            <div id="game-info" style="color: white; font-size: 1.2em; margin-bottom: 10px;">Điểm: <span id="score-display">0</span></div>
+            <div id="game-info" style="color: white;">Điểm: <span id="score-display">0</span></div>
             <canvas id="game-canvas"></canvas>
             <button id="summon-assistant-btn" class="hidden">Triệu hồi trợ thủ 🐟</button>
             <button id="open-gift" class="hidden">MỞ QUÀ</button>
@@ -163,35 +239,36 @@
     <div id="phase3" class="hidden">
         <div id="treasure">
             <div class="chest-container">
-                <div class="chest"></div>
+                <div class="chest" onclick="this.classList.toggle('open')"></div>
                 <div class="light-beam"></div>
             </div>
-            <div id="rewards" class="hidden" style="animation: fadeIn-Up 1s 1s forwards; opacity: 0;">
+            <div id="rewards" class="hidden">
                 <h2>Phần thưởng 1: Sẽ được gửi cho bạn qua mess vào tối nay! 🎁</h2>
-                <div class="reward2" style="margin-top: 20px;">
+                <div class="reward2">
                     <h3>Góc nhắc nhở nhẹ 📝</h3>
-                    <img src="https://i.imgur.com/eBf2g6v.png" alt="Góc nhắc nhở" style="max-width:90%; border-radius:10px;">
-                    <p style="font-size: 1.1em; font-weight: 500; margin-top: 10px;">T nghĩ là lớp ko đi chs đc r nma m vx phải bao t đi ăng đó cấm đc bùng 😋😋😋</p>
+                    <img src="https://i.imgur.com/eBf2g6v.png" alt="Góc nhắc nhở">
+                    <p>T nghĩ là lớp ko đi chs đc r nma m vx phải bao t đi ăng đó cấm đc bùng 😋😋😋</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="energy-bar" class="hidden"><div class="bar"></div></div>
-    <div id="avatar-container" class="hidden"><div id="avatar"></div></div>
+    <div id="avatar-container" class="hidden"><div id="avatar"></div><div class="arrow-hint">Ấn vào để xem hồ sơ của bạn</div></div>
     <div id="toast"></div>
     <div id="hint-pop" class="modal"><div class="modal-content"><p>Nếu bạn chưa biết mật khẩu thì hãy xem lại thiệp nhó =))</p><button onclick="closeModal('hint-pop')">Đã hiểu</button></div></div>
     <div id="assistant-pop" class="modal"><div class="modal-content"><h2>Phần Quà Đầu Tiên: Trợ Thủ 🐟</h2><p>"Đanh lê siu cấp cuti s1zt" đã sẵn sàng! Bạn có thể triệu hồi trợ thủ này khi thực sự cần thiết.</p><button onclick="closeModal('assistant-pop', () => showModal('ticket-pop'))">OK</button></div></div>
     <div id="ticket-pop" class="modal"><div class="modal-content"><h2>Phần Thưởng Khởi Đầu</h2><img src="https://i.imgur.com/4g0K2hG.png" alt="Phiếu bé ngoan" style="width:100%;"><button onclick="closeModal('ticket-pop', startWelcome)">Bắt đầu hành trình!</button></div></div>
     <div id="profile-pop" class="modal"><div class="modal-content"><h2>Hồ Sơ Của Bạn</h2><p><b>Tên gem thủ:</b> Nguyễn Đình Dương</p><p><b>Rank:</b> Siucapgalangđepzai=))))</p><button id="next1">Ấn để xem tiếp</button></div></div>
-    <div id="notify-pop" class="modal show"><div class="modal-content" style="cursor: pointer;"><p style="font-size: 1.2em;">🔔 Bạn có thông báo mới, hãy ấn vào để xem!</p></div></div>
+    <div id="notify-pop" class="modal"><div class="modal-content" style="cursor: pointer;"><p>🔔 Bạn có thông báo mới, hãy ấn vào để xem!</p></div></div>
     <div id="question-pop" class="modal"><div class="modal-content"><p>Trả lời câu hỏi để tiếp tục =))):<br>Bạn có thấy cảm động rớt nước mắt 😢😢😢 với món quà này ko?</p><button id="coa" style="font-size: 20px; padding: 12px 24px; margin: 5px;">cóa</button><button id="hem" style="position: relative; margin: 5px;">hem</button></div></div>
-    <div id="photo-viewer" class="modal"><div class="modal-content"><img id="memory-photo" src="" style="max-width:100%; border-radius: 10px;"><button style="margin-top: 15px;" onclick="closeModal('photo-viewer')">Đóng</button></div></div>
-    <div id="memories-pop" class="modal"><div class="modal-content"><p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p><button onclick="closeModal('memories-pop')">Okieee</button></div></div>
-    <div id="recharge-pop" class="modal"><div class="modal-content"><p style="font-size: 1.2em;">Năng lượng sắp cạn kiệt!</p><button id="nap">Nạp năng lượng</button></div></div>
+    <div id="photo-viewer" class="modal"><div class="modal-content"><img id="memory-photo" src="" style="max-width:95%; border-radius: 8px;"><button style="margin-top: 10px;" onclick="closeModal('photo-viewer')">Đóng</button></div></div>
+    <div id="memories-pop" class="modal"><div class="modal-content"><p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p><button onclick="closeModal('memories-pop', () => showModal('notify-continue-pop'))">Okieee</button></div></div>
+    <div id="recharge-pop" class="modal"><div class="modal-content"><p>Năng lượng sắp cạn kiệt!</p><button id="nap">Nạp năng lượng</button></div></div>
     <div id="game-rules-pop" class="modal"><div class="modal-content"><h2>Luật Chơi</h2><p>Di chuyển chuột để điều khiển 😇.</p><p>Ăn 🍦🍰 (+5đ), 🎂 (+10đ).</p><p>Tránh 💣 (-3đ)!</p><button onclick="closeModal('game-rules-pop', initGame)">Bắt đầu!</button></div></div>
     <div id="assistant-needed-pop" class="modal"><div class="modal-content"><p>Tình hình khó khăn quá! Có lẽ bạn cần sử dụng trợ thủ đó!</p><button onclick="closeModal('assistant-needed-pop')">OK!</button></div></div>
-    <div id="phase3-pass-pop" class="modal"><div class="modal-content"><p>Để mở kho báu, hãy gửi cú pháp này cho <b>ducanhlesiucapcutis1zutru</b> qua mess để nhận mật khẩu nhé hehehe:</p><p><span class="copy-code" onclick="copyCode(this)">toilanguyendinhduongtoixinhuasaunaysebaonuoiducanhlesiucapcutis1zutru✨</span></p><input id="pass-input2" type="text" placeholder="Nhập mật khẩu" style="width: 80%; padding: 8px; margin-top: 10px; border-radius: 5px; border: 1px solid #ccc;"><button id="submit-pass2" style="margin-top: 10px;">Mở Khóa</button></div></div>
+    <div id="phase3-pass-pop" class="modal"><div class="modal-content"><p>Để mở kho báu, hãy gửi cú pháp này cho <b>ducanhlesiucapcutis1zutru</b> qua mess để nhận mật khẩu nhé hehehe:</p><p><span class="copy-code" onclick="copyCode(this)">toilanguyendinhduongtoixinhuasaunaysebaonuoiducanhlesiucapcutis1zutru✨</span></p><input id="pass-input2" type="text" placeholder="Nhập mật khẩu"><button id="submit-pass2">Mở Khóa</button></div></div>
+    <div id="notify-continue-pop" class="modal"><div class="modal-content"><p>Hành trình kỷ niệm đã xong, ấn để đến trạm dừng chân nạp năng lượng nào!</p><button onclick="continueToGame()">Tiếp tục</button></div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script>
@@ -202,17 +279,23 @@
         // --- HÀM TIỆN ÍCH ---
         const getEl = (id) => document.getElementById(id);
         const showModal = (id) => getEl(id).classList.add('show');
-        const closeModal = (id, callback) => { getEl(id).classList.remove('show'); if (callback) setTimeout(callback, 500); };
+        const closeModal = (id, callback) => { getEl(id).classList.remove('show'); if (callback) setTimeout(callback, 400); }; // Giảm thời gian chờ
         const fadeTransition = (hideId, showId, callback) => {
             const hideEl = getEl(hideId); const showEl = getEl(showId);
             if (hideEl) { hideEl.style.transition = 'opacity 0.5s'; hideEl.style.opacity = 0; }
             setTimeout(() => {
                 if (hideEl) hideEl.classList.add('hidden');
-                if (showId) { showEl.classList.remove('hidden'); showEl.style.opacity = 0; setTimeout(() => { showEl.style.opacity = 1; }, 50); }
+                if (showId) { showEl.classList.remove('hidden'); showEl.style.opacity = 0; setTimeout(() => { showEl.style.opacity = 1; showEl.classList.add('show'); }, 50); }
                 if (callback) callback();
             }, 500);
         };
-        const updateEnergy = (amount) => { state.energy = Math.max(0, Math.min(100, state.energy + amount)); const bar = document.querySelector('#energy-bar .bar'); if (!bar) return; bar.style.width = `${state.energy}%`; };
+        const updateEnergy = (amount) => { 
+            state.energy = Math.max(0, Math.min(100, state.energy + amount)); 
+            const bar = document.querySelector('#energy-bar .bar'); 
+            if (!bar) return; 
+            bar.style.width = `${state.energy}%`; 
+            if (state.energy < 20) { bar.classList.add('flashing'); } else { bar.classList.remove('flashing'); }
+        };
         const showToast = (message) => { const toast = getEl('toast'); toast.textContent = message; toast.style.opacity = 1; setTimeout(() => { toast.style.opacity = 0; }, 2000); };
 
         // --- GIAI ĐOẠN 0: MÀN HÌNH KHÓA ---
@@ -242,11 +325,14 @@
         getEl('next1').onclick = () => {
             closeModal('profile-pop', () => {
                 updateEnergy(-10);
-                fadeTransition('welcome', 'tram1', () => showModal('notify-pop'));
+                fadeTransition('welcome', 'tram1', () => {
+                    // SỬA LỖI 1: Hiển thị popup ở đúng thời điểm
+                    showModal('notify-pop');
+                });
             });
         };
 
-        // --- GIAI ĐOẠN 2: THÔNG BÁO BTS (THEO LUỒNG CỦA BẠN) ---
+        // --- GIAI ĐOẠN 2: THÔNG BÁO BTS ---
         getEl('notify-pop').onclick = () => {
             closeModal('notify-pop', () => {
                 const announceEl = getEl('announce');
@@ -255,7 +341,7 @@
                     announceEl.style.transition = 'opacity 1s';
                     announceEl.style.opacity = 0;
                     showNewspapers();
-                }, 2000);
+                }, 2500);
             });
         };
 
@@ -277,55 +363,78 @@
                 setTimeout(() => {
                     newspapersContainer.classList.add('hidden');
                     getEl('main-tram1').classList.remove('hidden');
-                    getEl('music-player').play();
+                    getEl('music-player').play().catch(e => console.log("User interaction needed to play audio."));
+                    // SỬA LỖI 2: Kích hoạt animation
                     animateLikes(config.likeTarget);
                 }, 1000);
             }, 3000);
         }
         
+        // SỬA LỖI 2: Cải thiện hàm animateLikes
         function animateLikes(target) {
             const likeEl = getEl('like-count');
             const likeContainer = document.querySelector('.like-container');
             let current = 0;
-            const interval = setInterval(() => {
-                current += Math.ceil(target / 100);
-                if (current >= target) { current = target; clearInterval(interval); }
+            const duration = 2500; // 2.5 giây
+            const stepTime = 50; // Cập nhật sau mỗi 50ms
+            const steps = duration / stepTime;
+            const increment = target / steps;
+            let heartInterval = 0;
+
+            const animationInterval = setInterval(() => {
+                current += increment;
+                heartInterval++;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(animationInterval);
+                }
                 likeEl.textContent = `${(current/1000).toFixed(2)}k thả tim`;
-                const heart = document.createElement('div');
-                heart.className = 'flying-heart'; heart.textContent = '❤️';
-                heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 100}px`);
-                likeContainer.appendChild(heart);
-                setTimeout(() => heart.remove(), 1500);
-            }, 50);
+
+                if (heartInterval % 2 === 0) { // Tạo tim ít hơn một chút để không lag
+                    const heart = document.createElement('div');
+                    heart.className = 'flying-heart'; heart.textContent = '❤️';
+                    heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 80}px`);
+                    heart.style.setProperty('--rot-end', `${(Math.random() - 0.5) * 40}deg`);
+                    likeContainer.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1500);
+                }
+            }, stepTime);
         }
 
         getEl('next2').onclick = () => { updateEnergy(-15); fadeTransition('tram1', '', () => showModal('question-pop')); };
 
         // --- GIAI ĐOẠN 3: CÂU HỎI & KÝ ỨC ---
         getEl('coa').onclick = () => closeModal('question-pop', () => fadeTransition('', 'tram2'));
-        getEl('hem').addEventListener('mouseover', () => {
-            const btn = getEl('hem');
+        getEl('hem').addEventListener('mouseover', (e) => {
+            const btn = e.target;
             const parent = btn.parentElement.getBoundingClientRect();
             btn.style.position = 'absolute';
-            btn.style.top = `${Math.random() * (parent.height - 50)}px`;
-            btn.style.left = `${Math.random() * (parent.width - 100)}px`;
+            btn.style.top = `${Math.random() * (parent.height - btn.offsetHeight)}px`;
+            btn.style.left = `${Math.random() * (parent.width - btn.offsetWidth)}px`;
         });
         document.querySelectorAll('.cloud').forEach(cloud => {
             cloud.onclick = () => {
                 getEl('memory-photo').src = cloud.dataset.photo; showModal('photo-viewer');
                 if (!cloud.classList.contains('viewed')) {
-                    cloud.classList.add('viewed'); cloud.style.opacity = '0.7';
+                    cloud.classList.add('viewed'); cloud.style.opacity = '0.6';
                     state.viewedClouds++;
                     if (state.viewedClouds === 4) {
-                        getEl('next4').classList.remove('hidden');
+                        // CẢI TIẾN 3: Không hiện nút 'next4' nữa mà hiện popup sau 1 giây
                         setTimeout(() => showModal('memories-pop'), 1000);
                     }
                 }
             }
         });
-        getEl('next4').onclick = () => { updateEnergy(-30); fadeTransition('tram2', 'tram4', startEnergyDrain); };
 
-        // --- GIAI ĐOẠN 4: GAME (LOGIC CHUẨN ĐÃ TÍCH HỢP) ---
+        // CẢI TIẾN 3: Hàm mới để chuyển cảnh sang game
+        function continueToGame() {
+            closeModal('notify-continue-pop', () => {
+                updateEnergy(-30); 
+                fadeTransition('tram2', 'tram4', startEnergyDrain);
+            });
+        }
+
+        // --- GIAI ĐOẠN 4: GAME ---
         let game, ctx, player, items, score, gameLoop, gamePhase, spawnInterval, gameTimer;
         
         function startEnergyDrain() {
@@ -338,13 +447,19 @@
             if (gameLoop) cancelAnimationFrame(gameLoop);
             if (spawnInterval) clearInterval(spawnInterval);
             if (gameTimer) clearTimeout(gameTimer);
+            game.onmousemove = null;
         }
 
         function initGame() {
             cleanupGame();
             getEl('game-section').classList.remove('hidden');
             game = getEl('game-canvas'); ctx = game.getContext('2d');
-            game.width = Math.min(window.innerWidth * 0.9, 500); game.height = 400;
+            
+            // Đặt kích thước canvas dựa trên kích thước thật của nó trên màn hình
+            const rect = game.getBoundingClientRect();
+            game.width = rect.width;
+            game.height = rect.height;
+
             player = { x: game.width / 2, y: game.height - 40, size: 20, emoji: '😇' };
             items = []; score = 0; gamePhase = 'normal';
             state.assistantAvailable = false; state.assistantUsed = false;
@@ -385,11 +500,17 @@
         getEl('summon-assistant-btn').onclick = () => { if (state.assistantAvailable && !state.assistantUsed) { state.assistantUsed = true; player.emoji = '🐟'; getEl('summon-assistant-btn').classList.add('hidden'); } else if (!state.assistantAvailable){ showToast('Trợ thủ đang bận òi'); } };
         getEl('open-gift').onclick = () => { state.energy = 100; updateEnergy(0); document.querySelector('.dim-overlay').classList.remove('dim'); fadeTransition('tram4', '', () => showModal('phase3-pass-pop')); };
         
-        // --- GIAI ĐOẠN 5: KHO BÁU (LOGIC ĐÃ TÍCH HỢP) ---
-        function copyCode(element) { navigator.clipboard.writeText(element.textContent); showToast('Đã sao chép cú pháp!'); }
+        // --- GIAI ĐOẠN 5: KHO BÁU ---
+        function copyCode(element) { navigator.clipboard.writeText(element.textContent).then(() => showToast('Đã sao chép cú pháp!')); }
         getEl('submit-pass2').onclick = () => {
             if (getEl('pass-input2').value.trim().toLowerCase() === config.password2.trim().toLowerCase()) {
-                closeModal('phase3-pass-pop', () => { fadeTransition('', 'phase3', () => { const chest = getEl('treasure').querySelector('.chest'); chest.classList.add('open'); setTimeout(() => getEl('rewards').classList.remove('hidden'), 500); }); });
+                closeModal('phase3-pass-pop', () => { 
+                    fadeTransition('', 'phase3', () => { 
+                        const chest = getEl('treasure').querySelector('.chest'); 
+                        chest.classList.add('open'); 
+                        setTimeout(() => getEl('rewards').classList.remove('hidden'), 500); 
+                    }); 
+                });
             } else { alert('Mật khẩu sai bét! Hỏi lại đi hehe'); }
         };
 
