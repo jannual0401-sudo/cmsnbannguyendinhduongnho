@@ -494,9 +494,11 @@
 
     <div id="tram4" class="hidden">
         <div class="dim-overlay"></div>
-        <div id="recharge-pop" class="modal-content">
-            <p>Màn hình đang tối lại... Năng lượng sắp cạn!</p>
-            <button id="nap">Nạp năng lượng</button>
+        <div id="recharge-modal" class="modal hidden">
+            <div class="modal-content">
+                <p>Màn hình đang tối lại... Năng lượng sắp cạn!</p>
+                <button id="nap">Nạp năng lượng</button>
+            </div>
         </div>
         <div id="game-section" class="hidden">
             <div id="game-info">Điểm: <span id="score-display">0</span></div>
@@ -650,38 +652,6 @@
             animateLikes(22080);
         }
         
-        function animateLikes(target) {
-            const likeEl = document.querySelector('.like-count');
-            const likeContainer = document.querySelector('.like-container');
-            let currentLikes = 0;
-            const duration = 3000; // 3 giây
-            const stepTime = 50;
-            const steps = duration / stepTime;
-            const increment = target / steps;
-            
-            let likeInterval = setInterval(() => {
-                currentLikes += increment;
-                if (currentLikes >= target) {
-                    currentLikes = target;
-                    clearInterval(likeInterval);
-                }
-                likeEl.textContent = `${(currentLikes / 1000).toFixed(2)}k thả tim`;
-                
-                // Hiệu ứng tim bay
-                const heart = document.createElement('div');
-                heart.classList.add('flying-heart');
-                heart.textContent = '❤️';
-                heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 100}px`);
-                likeContainer.appendChild(heart);
-                setTimeout(() => heart.remove(), 1500);
-                
-            }, stepTime);
-        }
-        
-        getEl('next2').onclick = () => {
-             fadeTransition('tram1', 'tram2', () => showModal('question-pop'));
-        };
-        
         // --- STAGE 3: QUESTION & MEMORIES ---
         getEl('coa').onclick = () => {
             closeModal('question-pop');
@@ -712,13 +682,13 @@
 
         // --- STAGE 4: ENERGY DRAIN & GAME ---
         function startEnergyDrain() {
-            getEl('recharge-pop').classList.remove('hidden');
+            showModal('recharge-modal');
             document.querySelector('.dim-overlay').classList.add('dim');
         }
 
         getEl('nap').onclick = () => {
             document.querySelector('.dim-overlay').classList.remove('dim');
-            getEl('recharge-pop').classList.add('hidden');
+            closeModal('recharge-modal');
             getEl('game-section').classList.remove('hidden');
             initGame();
         };
@@ -728,7 +698,7 @@
         
         function initGame() {
             game = getEl('game-canvas');
-            ctx = game.getContext('2d');
+            const ctx = game.getContext('2d');
             game.width = Math.min(window.innerWidth * 0.9, 500);
             game.height = 400;
 
@@ -794,7 +764,7 @@
             if (score >= 50) { // Win condition
                 ctx.clearRect(0, 0, game.width, game.height);
                 ctx.fillStyle = '#FF69B4';
-                ctx.font = 'bold 30px Pacifico';
+                ctx.font = '30px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('Bạn đã thắng!', game.width / 2, game.height / 2);
                 getEl('open-gift').classList.remove('hidden');
