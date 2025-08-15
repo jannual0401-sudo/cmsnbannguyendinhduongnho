@@ -597,4 +597,42 @@
                 let item = items[i]; item.y += item.speed;
                 ctx.font = `${item.size * 1.5}px Arial`; ctx.fillText(item.emoji, item.x - item.size, item.y + item.size/2);
                 const dist = Math.hypot(player.x - item.x, player.y - item.y);
-                if (dist < player.size + item.size) { if (item.points < 0 && state.assistantUsed) { items.splice(i, 1); continue; } score += item.points; items.splice(i,
+                 if (dist < player.size + item.size) { if (item.points < 0 && state.assistantUsed) { items.splice(i, 1); continue; } score += item.points; items.splice(i, 1); }
+                else if (item.y > game.height + item.size) { items.splice(i, 1); }
+            }
+            score = Math.max(0, score); getEl('score-display').textContent = score;
+
+            if (score >= 80 && !state.assistantUsed) { gamePhase = 'bombardment'; } 
+            else if (score < 50) { gamePhase = 'normal'; }
+            
+            if (gamePhase === 'bombardment' && !state.assistantAvailable && !state.assistantUsed) { state.assistantAvailable = true; showModal('assistant-needed-pop'); getEl('summon-assistant-btn').classList.remove('hidden'); }
+            if (score >= config.gameWinScore) { getEl('open-gift').classList.remove('hidden'); getEl('summon-assistant-btn').classList.add('hidden'); cleanupGame(); return; }
+            gameLoop = requestAnimationFrame(updateGame);
+        }
+        
+        getEl('summon-assistant-btn').onclick = () => { if (state.assistantAvailable && !state.assistantUsed) { state.assistantUsed = true; player.emoji = '🐟'; gamePhase = 'normal'; getEl('summon-assistant-btn').classList.add('hidden'); } else if (!state.assistantAvailable){ showToast('Trợ thủ đang bận òi'); } };
+        getEl('open-gift').onclick = () => { state.energy = 100; updateEnergy(0); document.querySelector('.dim-overlay').classList.remove('dim'); fadeTransition('tram4', '', () => showModal('phase3-pass-pop')); };
+        
+        // --- GIAI ĐOẠN 5: KHO BÁU ---
+        function copyCode(element) { navigator.clipboard.writeText(element.textContent).then(() => showToast('Đã sao chép cú pháp!')); }
+        getEl('submit-pass2').onclick = () => {
+            if (getEl('pass-input2').value.trim().toLowerCase() === config.password2.trim().toLowerCase()) {
+                closeModal('phase3-pass-pop', () => { 
+                    fadeTransition('', 'phase3', () => { 
+                        const chest = getEl('treasure').querySelector('.chest'); 
+                        chest.classList.add('open');
+                        confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
+                        setTimeout(() => {
+                           getEl('phase3').classList.add('hidden');
+                           showModal('reward1-pop');
+                        }, 1500);
+                    }); 
+                });
+            } else { alert('Mật khẩu sai bét! Hỏi lại đi hehe'); }
+        };
+
+        // --- KHỞI ĐỘNG ---
+        window.onload = () => { setupLockScreen(); };
+    </script>
+</body>
+</html>
