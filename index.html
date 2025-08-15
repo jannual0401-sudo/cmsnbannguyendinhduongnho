@@ -70,7 +70,7 @@
         .bar.flashing { animation: flash 1s infinite; }
         @keyframes flash { 0%, 100% { background: #ff4d4d; } 50% { background: #ffb3b3; } }
         #avatar-container { position: fixed; top: 10px; left: 10px; z-index: 1000; }
-        #avatar { width: 30px; height: 30px; background-image: url('https://i.imgur.com/6bH0j8v.png'); background-size: cover; border-radius: 50%; cursor: pointer; border: 2px solid var(--secondary-color); }
+        #avatar { width: 30px; height: 30px; background-image: url('anh_dai_dien.jpg'); background-size: cover; border-radius: 50%; cursor: pointer; border: 2px solid var(--secondary-color); }
         .arrow-hint { position: absolute; top: -5px; left: 40px; background: white; padding: 3px 6px; border-radius: 5px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); white-space: nowrap; animation: fadeIn-Up 1s 2s ease-out forwards; opacity:0; font-size: 0.8em; }
         #tram1 { width: 90%; max-width: 400px; margin: 20px auto; }
         #announce-container { margin-bottom: 15px; }
@@ -204,8 +204,8 @@
     
     <div id="welcome" class="hidden">
         <h1 class="welcome-text">
-            Đây là món quà do ducanhlesiucapcutis1zutru✨ dành tặng cho bạn 😇😇😇
-            <p>Sinh nhật zui zẻ nhé 🎉🎉🎉</p>
+            Một món quà do 
+            <p>ducanhlesiucapcutis1zutru✨ dành tặng cho bạn 😇😇😇 sinh nhật zui zẻ nhé 🎉🎉🎉</p>
         </h1>
     </div>
 
@@ -222,10 +222,10 @@
         <div class="newspapers hidden"></div>
         <div id="main-tram1" class="hidden">
              <div id="main-tram1-content">
-                <img src="https://i.imgur.com/uR6G6dY.jpeg" alt="BTS Lineup">
+                <img src="bts_lineup.png" alt="BTS Lineup">
                 <div id="comment-overlay"></div>
             </div>
-            <audio id="music-player" controls loop><source src="https://cdn.glitch.global/c31a147a-0552-411a-9694-88623b3a0323/dynamite.mp3?v=1670322744883" type="audio/mpeg"></audio>
+            <audio id="music-player" controls loop><source src="images/BTS_Dynamite_Official_MV_(getmp3.pro).mp3" type="audio/mpeg"></audio>
             <div class="like-container">
                 <div id="like-count">0 thả tim</div>
             </div>
@@ -237,10 +237,10 @@
         <div id="memories">
             <div class="cat">🐱 Our Memories 🐱</div>
             <div class="clouds">
-                <div class="cloud c1" data-photo="https://i.imgur.com/gK5z3ro.jpeg"></div>
-                <div class="cloud c2" data-photo="https://i.imgur.com/S86x5lL.jpeg"></div>
-                <div class="cloud c3" data-photo="https://i.imgur.com/3q1Z03R.jpeg"></div>
-                <div class="cloud c4" data-photo="https://i.imgur.com/hCFy9Y5.jpeg"></div>
+                <div class="cloud c1" data-photo="images/classroom1.jpg"></div>
+                <div class="cloud c2" data-photo="images/walking.jpg"></div>
+                <div class="cloud c3" data-photo="images/hugging.jpg"></div>
+                <div class="cloud c4" data-photo="images/classroom2.jpg"></div>
             </div>
         </div>
     </div>
@@ -597,42 +597,4 @@
                 let item = items[i]; item.y += item.speed;
                 ctx.font = `${item.size * 1.5}px Arial`; ctx.fillText(item.emoji, item.x - item.size, item.y + item.size/2);
                 const dist = Math.hypot(player.x - item.x, player.y - item.y);
-                if (dist < player.size + item.size) { if (item.points < 0 && state.assistantUsed) { items.splice(i, 1); continue; } score += item.points; items.splice(i, 1); }
-                else if (item.y > game.height + item.size) { items.splice(i, 1); }
-            }
-            score = Math.max(0, score); getEl('score-display').textContent = score;
-
-            if (score >= 80 && !state.assistantUsed) { gamePhase = 'bombardment'; } 
-            else if (score < 50) { gamePhase = 'normal'; }
-            
-            if (gamePhase === 'bombardment' && !state.assistantAvailable && !state.assistantUsed) { state.assistantAvailable = true; showModal('assistant-needed-pop'); getEl('summon-assistant-btn').classList.remove('hidden'); }
-            if (score >= config.gameWinScore) { getEl('open-gift').classList.remove('hidden'); getEl('summon-assistant-btn').classList.add('hidden'); cleanupGame(); return; }
-            gameLoop = requestAnimationFrame(updateGame);
-        }
-        
-        getEl('summon-assistant-btn').onclick = () => { if (state.assistantAvailable && !state.assistantUsed) { state.assistantUsed = true; player.emoji = '🐟'; gamePhase = 'normal'; getEl('summon-assistant-btn').classList.add('hidden'); } else if (!state.assistantAvailable){ showToast('Trợ thủ đang bận òi'); } };
-        getEl('open-gift').onclick = () => { state.energy = 100; updateEnergy(0); document.querySelector('.dim-overlay').classList.remove('dim'); fadeTransition('tram4', '', () => showModal('phase3-pass-pop')); };
-        
-        // --- GIAI ĐOẠN 5: KHO BÁU ---
-        function copyCode(element) { navigator.clipboard.writeText(element.textContent).then(() => showToast('Đã sao chép cú pháp!')); }
-        getEl('submit-pass2').onclick = () => {
-            if (getEl('pass-input2').value.trim().toLowerCase() === config.password2.trim().toLowerCase()) {
-                closeModal('phase3-pass-pop', () => { 
-                    fadeTransition('', 'phase3', () => { 
-                        const chest = getEl('treasure').querySelector('.chest'); 
-                        chest.classList.add('open');
-                        confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
-                        setTimeout(() => {
-                           getEl('phase3').classList.add('hidden');
-                           showModal('reward1-pop');
-                        }, 1500);
-                    }); 
-                });
-            } else { alert('Mật khẩu sai bét! Hỏi lại đi hehe'); }
-        };
-
-        // --- KHỞI ĐỘNG ---
-        window.onload = () => { setupLockScreen(); };
-    </script>
-</body>
-</html>
+                if (dist < player.size + item.size) { if (item.points < 0 && state.assistantUsed) { items.splice(i, 1); continue; } score += item.points; items.splice(i,
