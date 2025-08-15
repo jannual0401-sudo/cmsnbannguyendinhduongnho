@@ -82,8 +82,8 @@
 
         .heart-lock {
             position: relative;
-            width: 200px;
-            height: 180px;
+            width: 300px;
+            height: 270px;
             margin: 0 auto;
         }
 
@@ -106,7 +106,13 @@
             transform: translate(-50%, -50%);
             display: flex;
             justify-content: space-around;
-            width: 160px;
+            width: 240px;
+        }
+
+        .digit-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .digit {
@@ -121,6 +127,20 @@
             font-weight: bold;
             font-size: 14px;
             transition: background 0.3s ease;
+        }
+
+        .arrow-btn {
+            background: transparent;
+            color: #FF69B4;
+            border: none;
+            padding: 0;
+            font-size: 12px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .arrow-btn:hover {
+            color: #FF1493;
         }
 
         #hint {
@@ -456,12 +476,12 @@
             }
 
             .heart-lock {
-                width: 150px;
-                height: 135px;
+                width: 250px;
+                height: 225px;
             }
 
             .digits {
-                width: 120px;
+                width: 200px;
             }
 
             .digit {
@@ -543,21 +563,52 @@
     <!-- Lock Screen -->
     <div id="lock-screen">
         <div class="heart-lock">
-            <svg class="heart" width="100%" height="100%" viewBox="0 0 100 90">
-                <path d="M50 80L10 40C10 20 20 10 40 10C50 5 60 5 60 10C80 10 90 20 90 40L50 80Z" />
+            <svg class="heart" width="100%" height="100%" viewBox="0 0 100 100">
+                <path d="M 10 30 A 20 20 0 0 1 50 30 A 20 20 0 0 1 90 30 Q 90 60 50 90 Q 10 60 10 30 z" />
             </svg>
             <div class="digits">
-                <div class="digit" id="d1">0</div>
-                <div class="digit" id="d2">0</div>
-                <div class="digit" id="d3">0</div>
-                <div class="digit" id="d4">0</div>
-                <div class="digit" id="d5">0</div>
-                <div class="digit" id="d6">0</div>
-                <div class="digit" id="d7">0</div>
-                <div class="digit" id="d8">0</div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(0, 1)">▲</button>
+                    <div class="digit" id="d1">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(0, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(1, 1)">▲</button>
+                    <div class="digit" id="d2">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(1, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(2, 1)">▲</button>
+                    <div class="digit" id="d3">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(2, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(3, 1)">▲</button>
+                    <div class="digit" id="d4">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(3, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(4, 1)">▲</button>
+                    <div class="digit" id="d5">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(4, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(5, 1)">▲</button>
+                    <div class="digit" id="d6">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(5, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(6, 1)">▲</button>
+                    <div class="digit" id="d7">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(6, -1)">▼</button>
+                </div>
+                <div class="digit-container">
+                    <button class="arrow-btn" onclick="changeDigit(7, 1)">▲</button>
+                    <div class="digit" id="d8">0</div>
+                    <button class="arrow-btn" onclick="changeDigit(7, -1)">▼</button>
+                </div>
             </div>
         </div>
-        <input type="text" id="password-input" style="opacity:0; position:absolute; width:1px; height:1px;" maxlength="8" autofocus>
         <div id="hint" onclick="showModal('hint-pop')">Gợi ý</div>
     </div>
 
@@ -728,17 +779,18 @@
             {avatar: '🐼', text: 'Anh ơi em yêu anh ❤❤❤'} // Special last
         ];
 
-        // Password input logic
-        const passInput = document.getElementById('password-input');
-        passInput.focus();
-        passInput.oninput = (e) => {
-            const val = e.target.value;
-            digits.forEach((d, i) => d.textContent = val[i - 1] || '0'); // Fix index (val[0] for d1)
-            if (val === password) {
+        // Password logic with up/down buttons
+        let currentPassword = '00000000';
+        function changeDigit(index, delta) {
+            let value = parseInt(digits[index].textContent);
+            value = (value + delta + 10) % 10; // Cycle 0-9
+            digits[index].textContent = value;
+            currentPassword = currentPassword.substring(0, index) + value + currentPassword.substring(index + 1);
+            if (currentPassword === password) {
                 document.getElementById('lock-screen').classList.add('hidden');
                 showModal('assistant-pop');
             }
-        };
+        }
 
         function showModal(id) {
             const modal = document.getElementById(id);
