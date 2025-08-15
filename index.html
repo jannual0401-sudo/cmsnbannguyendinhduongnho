@@ -61,7 +61,6 @@
         }
         .arrow-btn { background: transparent; color: var(--primary-color); border: none; padding: 3px; font-size: 16px; cursor: pointer; }
         #hint { margin-top: 20px; font-size: 14px; color: var(--primary-color); cursor: pointer; font-weight: bold; }
-        /* SỬA LỖI 4: Cải thiện hiển thị trang chào mừng trên mobile */
         #welcome { opacity: 0; transition: opacity 1s ease; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         #welcome.show { opacity: 1; }
         .welcome-text { font-size: 2em; font-family: 'Pacifico', cursive; color: var(--primary-color); text-shadow: 0 2px 4px rgba(0,0,0,0.1); animation: fadeIn-Up 1.5s ease-out forwards; }
@@ -79,6 +78,7 @@
         #announce { font-size: 1.8em; font-family: 'Pacifico', cursive; color: var(--primary-color); }
         .newspapers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10; }
         .newspaper { position: absolute; width: 60%; min-width: 200px; background: #fdf5e6; border: 1px solid #ccc; padding: 8px; font-family: 'Times New Roman', Times, serif; box-shadow: 3px 3px 10px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        /* SỬA LỖI 1: Điều chỉnh vị trí báo bay */
         @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(-150vw) rotateY(60deg) scale(0.7); } 70% { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(-10deg) rotateZ(var(--rotation)) scale(1); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(0deg) rotateZ(var(--rotation)) scale(1); } }
         #main-tram1 img { max-width: 100%; border-radius: 10px; margin-bottom: 10px; }
         #music-player { width: 100%; }
@@ -279,7 +279,7 @@
         // --- HÀM TIỆN ÍCH ---
         const getEl = (id) => document.getElementById(id);
         const showModal = (id) => getEl(id).classList.add('show');
-        const closeModal = (id, callback) => { getEl(id).classList.remove('show'); if (callback) setTimeout(callback, 400); }; // Giảm thời gian chờ
+        const closeModal = (id, callback) => { getEl(id).classList.remove('show'); if (callback) setTimeout(callback, 400); };
         const fadeTransition = (hideId, showId, callback) => {
             const hideEl = getEl(hideId); const showEl = getEl(showId);
             if (hideEl) { hideEl.style.transition = 'opacity 0.5s'; hideEl.style.opacity = 0; }
@@ -326,7 +326,6 @@
             closeModal('profile-pop', () => {
                 updateEnergy(-10);
                 fadeTransition('welcome', 'tram1', () => {
-                    // SỬA LỖI 1: Hiển thị popup ở đúng thời điểm
                     showModal('notify-pop');
                 });
             });
@@ -348,12 +347,14 @@
         function showNewspapers() {
             const newspapersContainer = document.querySelector('.newspapers');
             newspapersContainer.classList.remove('hidden');
-            for (let i = 0; i < 3; i++) {
+            // CẢI TIẾN 1: Tăng số lượng báo bay
+            for (let i = 0; i < 5; i++) {
                 const np = document.createElement('div');
                 np.className = 'newspaper';
-                np.style.setProperty('--x-pos', `${Math.random() * 40 - 20}vw`);
-                np.style.setProperty('--y-pos', `${Math.random() * 30 - 15}vh`);
-                np.style.setProperty('--rotation', `${Math.random() * 20 - 10}deg`);
+                // CẢI TIẾN 1: Điều chỉnh một chút vị trí để tự nhiên hơn
+                np.style.setProperty('--x-pos', `${Math.random() * 50 - 25}vw`);
+                np.style.setProperty('--y-pos', `${Math.random() * 40 - 20}vh`);
+                np.style.setProperty('--rotation', `${Math.random() * 30 - 15}deg`);
                 np.innerHTML = `<h3>HOT NEWS!</h3><p>BTS RA MẮT THÀNH VIÊN THỨ 8!</p>`;
                 newspapersContainer.appendChild(np);
             }
@@ -363,20 +364,19 @@
                 setTimeout(() => {
                     newspapersContainer.classList.add('hidden');
                     getEl('main-tram1').classList.remove('hidden');
-                    getEl('music-player').play().catch(e => console.log("User interaction needed to play audio."));
-                    // SỬA LỖI 2: Kích hoạt animation
+                    getEl('music-player').play().catch(e => console.error("Lỗi phát nhạc:", e));
                     animateLikes(config.likeTarget);
                 }, 1000);
             }, 3000);
         }
         
-        // SỬA LỖI 2: Cải thiện hàm animateLikes
         function animateLikes(target) {
             const likeEl = getEl('like-count');
             const likeContainer = document.querySelector('.like-container');
             let current = 0;
-            const duration = 2500; // 2.5 giây
-            const stepTime = 50; // Cập nhật sau mỗi 50ms
+            // CẢI TIẾN 1: Kéo dài thời gian để hiệu ứng chậm lại
+            const duration = 4000; // 4 giây
+            const stepTime = 50;
             const steps = duration / stepTime;
             const increment = target / steps;
             let heartInterval = 0;
@@ -390,7 +390,7 @@
                 }
                 likeEl.textContent = `${(current/1000).toFixed(2)}k thả tim`;
 
-                if (heartInterval % 2 === 0) { // Tạo tim ít hơn một chút để không lag
+                if (heartInterval % 3 === 0) { // Giảm tần suất tạo tim một chút
                     const heart = document.createElement('div');
                     heart.className = 'flying-heart'; heart.textContent = '❤️';
                     heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 80}px`);
@@ -419,14 +419,12 @@
                     cloud.classList.add('viewed'); cloud.style.opacity = '0.6';
                     state.viewedClouds++;
                     if (state.viewedClouds === 4) {
-                        // CẢI TIẾN 3: Không hiện nút 'next4' nữa mà hiện popup sau 1 giây
                         setTimeout(() => showModal('memories-pop'), 1000);
                     }
                 }
             }
         });
-
-        // CẢI TIẾN 3: Hàm mới để chuyển cảnh sang game
+        
         function continueToGame() {
             closeModal('notify-continue-pop', () => {
                 updateEnergy(-30); 
@@ -447,7 +445,7 @@
             if (gameLoop) cancelAnimationFrame(gameLoop);
             if (spawnInterval) clearInterval(spawnInterval);
             if (gameTimer) clearTimeout(gameTimer);
-            game.onmousemove = null;
+            if (game) game.onmousemove = null;
         }
 
         function initGame() {
@@ -455,7 +453,8 @@
             getEl('game-section').classList.remove('hidden');
             game = getEl('game-canvas'); ctx = game.getContext('2d');
             
-            // Đặt kích thước canvas dựa trên kích thước thật của nó trên màn hình
+            // SỬA LỖI 2: Đặt kích thước canvas dựa trên kích thước thật của nó trên màn hình
+            // Đây là bước quan trọng để đảm bảo tọa độ chuột chính xác
             const rect = game.getBoundingClientRect();
             game.width = rect.width;
             game.height = rect.height;
@@ -467,7 +466,10 @@
             getEl('open-gift').classList.add('hidden');
             getEl('summon-assistant-btn').classList.add('hidden');
             gameTimer = setTimeout(() => { gamePhase = 'impossible'; }, 20000);
-            game.onmousemove = e => { const rect = game.getBoundingClientRect(); player.x = e.clientX - rect.left; };
+            game.onmousemove = e => { 
+                const currentRect = game.getBoundingClientRect(); 
+                player.x = e.clientX - currentRect.left; 
+            };
             spawnInterval = setInterval(spawnItem, 500);
             gameLoop = requestAnimationFrame(updateGame);
         }
@@ -482,7 +484,8 @@
         
         function updateGame() {
             ctx.clearRect(0, 0, game.width, game.height);
-            ctx.font = `${player.size * 1.5}px Arial`; ctx.fillText(player.emoji, player.x - player.size, player.y + player.size/2);
+            ctx.font = `${player.size * 1.5}px Arial`; 
+            ctx.fillText(player.emoji, player.x - player.size, player.y + player.size/2);
             if (state.assistantUsed) { ctx.beginPath(); ctx.arc(player.x, player.y - 5, player.size * 2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(74, 179, 255, 0.3)'; ctx.fill(); }
             for (let i = items.length - 1; i >= 0; i--) {
                 let item = items[i]; item.y += item.speed;
