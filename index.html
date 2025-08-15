@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <!-- Phần đầu -->
+    <!--
+        1. h1 - h6 Heading
+        2. p - Paragraph
+        3. img - image
+        4. a - anchor (chèn link)
+        5. ul, li - unordered list, list item (ol - chuyển thành số)
+        6. table
+        7. input (nhập dữ liệu vào)
+        8. button
+        9. div (bao dữ liệu)
+        10. attribute (thêm thuộc tính vào các thẻ)
+    -->
+
+    <!--
+        3 cách sử dụng css trong html:
+        1. External
+        2. Internal
+        3. Inline (attribute)
+        Chỉnh từng kí tự trong CSS:
+        ID & Class (ID:# Class: .)
+    -->
+
+    <!--
+        Mức độ ưu tiên
+        Internal==External
+        Inline->id->class->tag (dùng style)
+        Equal specificity (Các cái cùng bậc thì ưu tiên cái viêt sau)
+        Universal selector and inherited (Dùng * để chỉnh cả file, !important để ưu tiên nhất)
+    -->
+
+    <!--
+        rem (phụ thuộc vào thẻ html) - responsive
+        %: phụ thuộc vào thẻ chứa nó
+        vw: phần trăm chiều ngang
+        vh: phần trăm chiều dọc
+    -->
+    <head>
+        <title>F8 - Shop</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="main.css">
+        <style>
+            .box {
+                width: 100%;
+                height: 100px;
+                background-color: red;
+            }
+
+            h1{
+                font-size: 100px;
+            }
+        </style>
+    </head>
+    <!-- Phần thân -->
+    <body>
+        <div class="box"></div>
+       <h1> CSS in HTML </h1>
+       <h2> CSS variable </h2>
+    </body>
+</html>
