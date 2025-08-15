@@ -14,8 +14,12 @@
             --background-color: #FFF5EE;
             --text-color: #4A4A4A;
         }
-        html { box-sizing: border-box; }
-        *, *:before, *:after { box-sizing: inherit; }
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
         body {
             font-family: 'Quicksand', sans-serif; background-color: var(--background-color);
             color: var(--text-color); margin: 0; padding: 15px; display: flex;
@@ -71,7 +75,6 @@
         #tram1 { width: 90%; max-width: 400px; margin: 20px auto; }
         #announce-container { margin-bottom: 15px; }
         #announce { font-size: 1.8em; font-family: 'Pacifico', cursive; color: var(--primary-color); }
-        /* CẢI TIẾN 2: CSS cho báo bay và comment */
         .newspapers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10; }
         .newspaper { position: absolute; width: 60%; min-width: 200px; background: #fdf5e6; border: 1px solid #ccc; padding: 8px; font-family: 'Times New Roman', Times, serif; box-shadow: 3px 3px 10px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .newspaper.style-2 { background: #e6f7ff; border-color: #91d5ff; }
@@ -87,7 +90,7 @@
         }
         @keyframes comment-fade-in-scale { to { opacity: 1; transform: scale(1); } }
         .fan-comment .avatar { font-size: 1.2em; }
-        #main-tram1 img { max-width: 100%; border-radius: 10px; margin-bottom: 10px; }
+        #main-tram1 img { max-width: 100%; border-radius: 10px; margin-bottom: 10px; display: block; }
         #music-player { width: 100%; }
         .like-container { margin-top: 10px; font-size: 1em; font-weight: bold; position: relative; min-height: 50px; }
         #like-count { color: var(--primary-color); font-size: 1.2em; }
@@ -97,67 +100,169 @@
         .cat { font-size: 2.5em; text-align: center; font-family: 'Pacifico', cursive; color: var(--primary-color); margin-bottom: 15px; }
         .clouds { position: relative; width: 100%; height: auto; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-items: center; gap: 15px; }
         .cloud { position: relative !important; width: 45%; min-width: 100px; height: auto; aspect-ratio: 2 / 1.2; background: #fff; border-radius: 50px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease; animation: float 5s infinite ease-in-out; }
-        .cloud:hover { transform: scale(1.05) translateY(-5px); }
+        .cloud:before, .cloud:after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+        .cloud:before { width: 60%; height: 100%; top: -20%; left: 15%; }
+        .cloud:after { width: 40%; height: 60%; top: -10%; right: 15%; }
+        .cloud:hover { transform: scale(1.05) translateY(-5px); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        #photo-viewer .modal-content { padding: 15px; }
+        #photo-viewer img { max-width: 95%; max-height: 70vh; border-radius: 8px; }
         #tram4 { width: 90%; max-width: 400px; margin: 20px auto; }
+        .dim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+        .dim-overlay.dim { opacity: 1; pointer-events: all; }
         #game-section { position: relative; z-index: 501; }
         #game-canvas { border: 2px solid var(--primary-color); background: #FFF0F5; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: none; width: 100% !important; height: auto !important; aspect-ratio: 5 / 4; display: block; margin: 0 auto; }
+        #game-info { color: white; font-size: 1em; margin-bottom: 8px; }
+        #summon-assistant-btn { margin-top: 10px; background-color: #4ab3ff; padding: 8px 16px; font-size: 0.9em; }
+        #summon-assistant-btn:hover { background-color: #0088ff; }
+        #open-gift { margin-top: 10px; padding: 10px 20px; font-size: 1em; }
         #phase3 { width: 90%; max-width: 400px; margin: 20px auto; }
         #treasure { text-align: center; }
         .chest-container { perspective: 800px; margin-bottom: 20px; display: inline-block; }
         .chest { width: 150px; height: 120px; background: linear-gradient(#DAA520, #FFD700); border-radius: 8px; position: relative; transform-style: preserve-3d; transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); cursor: pointer; }
+        .chest:before { content: ''; position: absolute; top: -8px; left: 10%; width: 80%; height: 15px; background: #B8860B; border-radius: 4px; }
         .chest.open { transform: rotateX(45deg); }
+        .light-beam { position: absolute; top: 50%; left: 50%; width: 300px; height: 400px; background: radial-gradient(circle, rgba(255, 255, 224, 0.7) 0%, rgba(255, 255, 224, 0) 70%); transform: translate(-50%, -100%) scaleY(0); transform-origin: bottom center; opacity: 0; transition: transform 1s 0.5s ease-out, opacity 1s 0.5s ease-out; z-index: -1;}
+        .chest.open + .light-beam { transform: translate(-50%, -100%) scaleY(1); opacity: 1; }
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 8px 16px; border-radius: 6px; z-index: 2000; opacity: 0; transition: opacity 0.3s; font-size: 0.9em; }
+        .modal-content p { font-size: 1em; }
+        .modal-content h2 { font-size: 1.3em; color: var(--primary-color); }
+        .copy-code { color: #FF1493; text-decoration: underline; cursor: pointer; font-weight: bold; background: #eee; padding: 3px; border-radius: 3px; font-size: 0.8em; }
+        #pass-input2 { width: 70%; padding: 6px; margin-top: 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 0.9em; }
+        #submit-pass2 { margin-top: 8px; padding: 8px 16px; font-size: 0.9em; }
+        #notify-pop .modal-content { cursor: pointer; }
+        #notify-continue-pop .modal-content { font-size: 1em; }
+        #notify-continue-pop .modal-content button { margin-top: 10px; }
         #profile-pop img.profile-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px auto; border: 3px solid var(--primary-color); }
         @media (min-width: 769px) {
-            body { padding: 0; } .welcome-text { font-size: 2.5em; }
-            #tram1 { max-width: 600px; } #announce { font-size: 2.5em; }
-            #memories { max-width: 1000px; } .cat { font-size: 3em; }
-            .clouds { flex-direction: row; flex-wrap: nowrap; height: 60vh; }
-            .cloud { position: absolute !important; width: 200px; aspect-ratio: auto; }
-            .cloud.c1 { top: 10%; left: 10%; } .cloud.c2 { top: 40%; left: 25%; } .cloud.c3 { top: 20%; left: 60%; } .cloud.c4 { top: 50%; left: 75%; }
+            body { padding: 0; }
+            .heart-lock { width: 500px; height: 450px; margin: 0 auto; }
+            .digits { gap: 15px; }
+            .digit { width: 40px; height: 50px; font-size: 24px; margin: 5px 0; }
+            .arrow-btn { padding: 5px; font-size: 20px; }
+            #hint { font-size: 16px; }
+            .welcome-text { font-size: 2.5em; }
+            .welcome-text p { font-size: 0.5em; }
+            #energy-bar { top: 20px; right: 20px; width: 150px; height: 15px; border-radius: 10px; }
+            #avatar-container { top: 20px; left: 20px; }
+            #avatar { width: 50px; height: 50px; border: 3px solid var(--secondary-color); }
+            .arrow-hint { top: 5px; left: 60px; padding: 5px 10px; border-radius: 10px; font-size: 1em; }
+            #tram1 { max-width: 600px; }
+            #announce { font-size: 2.5em; }
+            .newspaper { width: 250px; padding: 10px; }
+            #main-tram1 img { margin-bottom: 15px; }
+            .like-container { font-size: 1.2em; }
+            #like-count { font-size: 1.5em; }
+            .flying-heart { font-size: 24px; }
+            #memories { max-width: 1000px; }
+            .cat { font-size: 3em; margin-bottom: 20px; }
+            .clouds { flex-direction: row; flex-wrap: nowrap; justify-content: space-around; gap: 20px; height: 60vh; align-items: stretch; }
+            .cloud { position: absolute !important; width: 200px; aspect-ratio: auto; animation-duration: 8s; }
+            .cloud:hover { transform: scale(1.1) translateY(-10px); }
+            @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+            .cloud.c1 { top: 10%; left: 10%; animation-delay: -2s; } .cloud.c2 { top: 40%; left: 25%; animation-delay: -4s; } .cloud.c3 { top: 20%; left: 60%; animation-delay: 0s; } .cloud.c4 { top: 50%; left: 75%; animation-delay: -6s; }
+            #photo-viewer .modal-content { padding: 25px 30px; }
+            #photo-viewer img { max-width: 90%; max-height: 80vh; border-radius: 10px; }
+            #tram4 { max-width: 600px; }
+            #game-canvas { border: 3px solid var(--primary-color); border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); aspect-ratio: 500 / 400; }
+            #game-info { font-size: 1.2em; margin-bottom: 10px; }
+            #summon-assistant-btn { margin-top: 15px; padding: 12px 24px; font-size: 1em; }
+            #open-gift { margin-top: 15px; padding: 12px 24px; font-size: 1em; }
+            .dim-overlay { background: rgba(0,0,0,0.8); }
+            #phase3 { max-width: 600px; }
+            .chest-container { perspective: 1000px; margin-bottom: 30px; }
+            .chest { width: 200px; height: 160px; border-radius: 10px; }
+            .chest:before { top: -10px; height: 20px; border-radius: 5px; }
+            #toast { bottom: 30px; padding: 10px 20px; border-radius: 8px; font-size: 1em; }
+            .modal-content p { font-size: 1.2em; }
+            .modal-content h2 { font-size: 1.5em; }
+            .copy-code { padding: 5px; border-radius: 5px; font-size: 1em; }
+            #pass-input2 { width: 80%; padding: 8px; margin-top: 10px; border-radius: 5px; font-size: 1em; }
+            #submit-pass2 { margin-top: 10px; padding: 10px 20px; font-size: 1em; }
             .fan-comment { font-size: 1em; }
-            #game-canvas { aspect-ratio: 500 / 400; }
         }
     </style>
 </head>
 <body>
     
-    <div id="lock-screen"> /* ... Nội dung màn hình khóa không đổi ... */ </div>
-    <div id="welcome" class="hidden"> /* ... Nội dung chào mừng không đổi ... */ </div>
+    <div id="lock-screen">
+        <div class="heart-lock">
+            <svg class="heart" viewBox="0 0 100 95"><path d="M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z" /></svg>
+            <div class="digits"></div>
+        </div>
+        <div id="hint">Gợi ý</div>
+    </div>
+    
+    <div id="welcome" class="hidden">
+        <h1 class="welcome-text">
+            Đây là món quà do ducanhlesiucapcutis1zutru✨ dành tặng cho bạn 😇😇😇
+            <p>Sinh nhật zui zẻ nhé 🎉🎉🎉</p>
+        </h1>
+    </div>
+
     <div id="newspaper-wall" class="hidden">
         <h2>Báo chí đưa tin rầm rộ!</h2>
         <p>Một hiện tượng mới sắp được công bố...</p>
         <button id="view-main-news">Xem tin chính</button>
     </div>
+
     <div id="tram1" class="hidden">
         <div id="announce-container">
              <div id="announce" class="hidden">BTS chính thức công bố thành viên thứ 8!</div>
         </div>
         <div class="newspapers hidden"></div>
         <div id="main-tram1" class="hidden">
-            <div id="main-tram1-content">
+             <div id="main-tram1-content">
                 <img src="https://i.imgur.com/uR6G6dY.jpeg" alt="BTS Lineup">
                 <div id="comment-overlay"></div>
             </div>
             <audio id="music-player" controls loop><source src="https://cdn.glitch.global/c31a147a-0552-411a-9694-88623b3a0323/dynamite.mp3?v=1670322744883" type="audio/mpeg"></audio>
-            <div class="like-container"> <div id="like-count">0 thả tim</div> </div>
+            <div class="like-container">
+                <div id="like-count">0 thả tim</div>
+            </div>
             <button id="next2" style="margin-top: 15px;">Tiếp tục hành trình</button>
         </div>
     </div>
-    <div id="tram2" class="hidden"> /* ... Nội dung trạm 2 không đổi ... */ </div>
-    <div id="tram4" class="hidden"> /* ... Nội dung trạm 4 và game không đổi ... */ </div>
+    
+    <div id="tram2" class="hidden">
+        <div id="memories">
+            <div class="cat">🐱 Our Memories 🐱</div>
+            <div class="clouds">
+                <div class="cloud c1" data-photo="https://i.imgur.com/gK5z3ro.jpeg"></div>
+                <div class="cloud c2" data-photo="https://i.imgur.com/S86x5lL.jpeg"></div>
+                <div class="cloud c3" data-photo="https://i.imgur.com/3q1Z03R.jpeg"></div>
+                <div class="cloud c4" data-photo="https://i.imgur.com/hCFy9Y5.jpeg"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tram4" class="hidden">
+        <div class="dim-overlay"></div>
+        <div id="game-section" class="hidden">
+            <h2 style="color: white;">Nạp Năng Lượng!</h2>
+            <div id="game-info">Điểm: <span id="score-display">0</span></div>
+            <canvas id="game-canvas"></canvas>
+            <button id="summon-assistant-btn" class="hidden">Triệu hồi trợ thủ 🐟</button>
+            <button id="open-gift" class="hidden">MỞ QUÀ</button>
+        </div>
+    </div>
+    
     <div id="phase3" class="hidden">
         <div id="treasure">
-            <div class="chest-container"> <div class="chest"></div> <div class="light-beam"></div> </div>
+            <div class="chest-container">
+                <div class="chest"></div>
+                <div class="light-beam"></div>
             </div>
+        </div>
     </div>
 
     <div id="energy-bar" class="hidden"><div class="bar"></div></div>
     <div id="avatar-container" class="hidden"><div id="avatar"></div><div class="arrow-hint">Ấn vào để xem hồ sơ của bạn</div></div>
     <div id="toast"></div>
-    <div id="hint-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="assistant-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="ticket-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
+
+    <div id="hint-pop" class="modal"><div class="modal-content"><p>Nếu bạn chưa biết mật khẩu thì hãy xem lại thiệp nhó =))</p><button onclick="closeModal('hint-pop')">Đã hiểu</button></div></div>
+    <div id="assistant-pop" class="modal"><div class="modal-content"><h2>Phần Quà Đầu Tiên: Trợ Thủ 🐟</h2><p>"Đanh lê siu cấp cuti s1zt" đã sẵn sàng! Bạn có thể triệu hồi trợ thủ này khi thực sự cần thiết.</p><button onclick="closeModal('assistant-pop', () => showModal('ticket-pop'))">OK</button></div></div>
+    <div id="ticket-pop" class="modal"><div class="modal-content"><h2>Phần Thưởng Khởi Đầu</h2><img src="https://i.imgur.com/4g0K2hG.png" alt="Phiếu bé ngoan" style="width:100%;"><button onclick="closeModal('ticket-pop', startWelcome)">Bắt đầu hành trình!</button></div></div>
     <div id="profile-pop" class="modal"><div class="modal-content">
         <h2>Hồ Sơ Của Bạn</h2>
         <img src="https://i.imgur.com/6bH0j8v.png" alt="Avatar" class="profile-avatar">
@@ -166,22 +271,18 @@
         <button id="next1">Ấn để xem tiếp</button>
     </div></div>
     <div id="notify-pop" class="modal"><div class="modal-content" style="cursor: pointer;"><p>🔔 Bạn có thông báo mới, hãy ấn vào để xem!</p></div></div>
-    <div id="question-pop" class="modal"><div class="modal-content">
-        <p>Trả lời câu hỏi để tiếp tục =))):<br>Bạn có thấy cảm động rớt nước mắt 😢😢😢 với món quà này ko?</p>
-        <button id="coa" style="font-size: 24px; padding: 15px 30px; margin: 5px;">cóa</button>
-        <button id="hem" style="position: relative; margin: 5px;">hem</button>
-    </div></div>
+    <div id="question-pop" class="modal"><div class="modal-content"><p>Trả lời câu hỏi để tiếp tục =))):<br>Bạn có thấy cảm động rớt nước mắt 😢😢😢 với món quà này ko?</p><button id="coa" style="font-size: 20px; padding: 12px 24px; margin: 5px;">cóa</button><button id="hem" style="position: relative; margin: 5px;">hem</button></div></div>
     <div id="coa-response-pop" class="modal"><div class="modal-content">
         <p style="font-size: 1.5em; font-family: 'Pacifico', cursive; color: var(--primary-color);">weo chọn cóa lun hẻ, trời oie đáng iu z 😍😍😍</p>
         <button id="continue-to-tram2">Hihi ngại quá</button>
     </div></div>
-    <div id="photo-viewer" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="memories-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="recharge-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="game-rules-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="assistant-needed-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="phase3-pass-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
-    <div id="notify-continue-pop" class="modal"> /* ... Nội dung không đổi ... */ </div>
+    <div id="photo-viewer" class="modal"><div class="modal-content"><img id="memory-photo" src="" style="max-width:95%; border-radius: 8px;"><button style="margin-top: 10px;" onclick="closeModal('photo-viewer')">Đóng</button></div></div>
+    <div id="memories-pop" class="modal"><div class="modal-content"><p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p><button onclick="closeModal('memories-pop', () => showModal('notify-continue-pop'))">Okieee</button></div></div>
+    <div id="recharge-pop" class="modal"><div class="modal-content"><p>Năng lượng sắp cạn kiệt!</p><button id="nap">Nạp năng lượng</button></div></div>
+    <div id="game-rules-pop" class="modal"><div class="modal-content"><h2>Luật Chơi</h2><p>Di chuyển chuột hoặc ngón tay để điều khiển 😇.</p><p>Ăn 🍦🍰 (+5đ), 🎂 (+10đ).</p><p>Tránh 💣 (-3đ)!</p><button onclick="closeModal('game-rules-pop', initGame)">Bắt đầu!</button></div></div>
+    <div id="assistant-needed-pop" class="modal"><div class="modal-content"><p>Tình hình khó khăn quá! Có lẽ bạn cần sử dụng trợ thủ đó!</p><button onclick="closeModal('assistant-needed-pop')">OK!</button></div></div>
+    <div id="phase3-pass-pop" class="modal"><div class="modal-content"><p>Để mở kho báu, hãy gửi cú pháp này cho <b>ducanhlesiucapcutis1zutru</b> qua mess để nhận mật khẩu nhé hehehe:</p><p><span class="copy-code" onclick="copyCode(this)">toilanguyendinhduongtoixinhuasaunaysebaonuoiducanhlesiucapcutis1zutru✨</span></p><input id="pass-input2" type="text" placeholder="Nhập mật khẩu"><button id="submit-pass2">Mở Khóa</button></div></div>
+    <div id="notify-continue-pop" class="modal"><div class="modal-content"><p>Hành trình kỷ niệm đã xong, ấn để đến trạm dừng chân nạp năng lượng nào!</p><button onclick="continueToGame()">Tiếp tục</button></div></div>
     <div id="reward1-pop" class="modal"><div class="modal-content">
         <h2>Phần thưởng 1: Sẽ được gửi cho bạn qua mess vào tối nay! 🎁</h2>
         <button onclick="closeModal('reward1-pop', () => showModal('forgot-pop'))">Tuyệt vời!</button>
@@ -197,11 +298,13 @@
         <button style="margin-top: 15px;" onclick="closeModal('reminder-pop')">Okie la</button>
     </div></div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script>
+        // --- CẤU HÌNH & TRẠNG THÁI ---
         const config = { password: '22082007', password2: 'oke =))', likeTarget: 22080, gameWinScore: 100 };
-        const state = { energy: 100, assistantAvailable: false, assistantUsed: false, viewedClouds: 0 };
+        const state = { energy: 100, choseHemFirst: false, assistantAvailable: false, assistantUsed: false, viewedClouds: 0 };
+
+        // --- HÀM TIỆN ÍCH ---
         const getEl = (id) => document.getElementById(id);
         const showModal = (id) => getEl(id).classList.add('show');
         const closeModal = (id, callback) => { getEl(id).classList.remove('show'); if (callback) setTimeout(callback, 400); };
@@ -214,9 +317,48 @@
                 if (callback) callback();
             }, 500);
         };
-        const updateEnergy = (amount) => { /* ... Hàm không đổi ... */ };
-        const showToast = (message) => { /* ... Hàm không đổi ... */ };
+        const updateEnergy = (amount) => { 
+            state.energy = Math.max(0, Math.min(100, state.energy + amount)); 
+            const bar = document.querySelector('#energy-bar .bar'); 
+            if (!bar) return; 
+            bar.style.width = `${state.energy}%`; 
+            if (state.energy < 20) { bar.classList.add('flashing'); } else { bar.classList.remove('flashing'); }
+        };
+        const showToast = (message) => { const toast = getEl('toast'); toast.textContent = message; toast.style.opacity = 1; setTimeout(() => { toast.style.opacity = 0; }, 2000); };
+
+        // --- GIAI ĐOẠN 0: MÀN HÌNH KHÓA ---
+        let currentDigits = Array(config.password.length).fill(0);
+        function setupLockScreen() {
+            const digitsContainer = document.querySelector('.digits');
+            digitsContainer.innerHTML = Array(config.password.length).fill(0).map((_, i) => `<div class="digit-container"><button class="arrow-btn" onclick="changeDigit(${i}, 1)">▲</button><div class="digit" id="d${i}">0</div><button class="arrow-btn" onclick="changeDigit(${i}, -1)">▼</button></div>`).join('');
+        }
+        function changeDigit(index, delta) {
+            currentDigits[index] = (currentDigits[index] + delta + 10) % 10;
+            getEl(`d${index}`).textContent = currentDigits[index];
+            if (currentDigits.join('') === config.password) { document.querySelector('.heart-lock').style.transform = 'scale(1.2)'; setTimeout(unlock, 500); }
+        }
+        function unlock() { fadeTransition('lock-screen', '', () => showModal('assistant-pop')); }
         
+        // --- GIAI ĐOẠN 1: CHÀO MỪNG & HỒ SƠ ---
+        function startWelcome() {
+            fadeTransition('', 'welcome', () => {
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                getEl('energy-bar').classList.remove('hidden');
+                getEl('avatar-container').classList.remove('hidden');
+                updateEnergy(0);
+            });
+        }
+        getEl('hint').onclick = () => showModal('hint-pop');
+        getEl('avatar').onclick = () => showModal('profile-pop');
+        getEl('next1').onclick = () => {
+            closeModal('profile-pop', () => {
+                updateEnergy(-10);
+                fadeTransition('welcome', 'tram1', () => {
+                    showModal('notify-pop');
+                });
+            });
+        };
+
         // --- GIAI ĐOẠN 2: THÔNG BÁO BTS & COMMENT ---
         getEl('notify-pop').onclick = () => {
             closeModal('notify-pop', () => {
@@ -232,7 +374,6 @@
         function showNewspapers() {
             const newspapersContainer = document.querySelector('.newspapers');
             newspapersContainer.classList.remove('hidden');
-            // CẢI TIẾN 2: Tăng số báo, thêm style và chỉnh vị trí trên mobile
             for (let i = 0; i < 15; i++) {
                 const np = document.createElement('div');
                 np.className = `newspaper ${Math.random() > 0.6 ? 'style-2' : ''}`;
@@ -253,7 +394,6 @@
                 getEl('main-tram1').classList.remove('hidden');
                 getEl('music-player').play().catch(e => console.error("Lỗi phát nhạc:", e));
                 animateLikes(config.likeTarget);
-                // CẢI TIẾN 2: Hiển thị comment của fan
                 showFanComments();
             });
         }
@@ -284,7 +424,6 @@
                 delay += Math.random() * 1000 + 500;
             });
             
-            // Comment đặc biệt luôn ở cuối
             setTimeout(() => {
                 const specialEl = document.createElement('div');
                 specialEl.className = 'fan-comment';
@@ -296,44 +435,112 @@
             }, delay + 1000);
         }
 
-        // --- GIAI ĐOẠN 3: CÂU HỎI VÀ KỶ NIỆM ---
+        function animateLikes(target) {
+            const likeEl = getEl('like-count');
+            const likeContainer = document.querySelector('.like-container');
+            let current = 0;
+            const duration = 4000; 
+            const stepTime = 50;
+            const steps = duration / stepTime;
+            const increment = target / steps;
+            let heartInterval = 0;
+
+            const animationInterval = setInterval(() => {
+                current += increment;
+                heartInterval++;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(animationInterval);
+                }
+                likeEl.textContent = `${(current/1000).toFixed(2)}k thả tim`;
+
+                if (heartInterval % 3 === 0) { 
+                    const heart = document.createElement('div');
+                    heart.className = 'flying-heart'; heart.textContent = '❤️';
+                    heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 80}px`);
+                    heart.style.setProperty('--rot-end', `${(Math.random() - 0.5) * 40}deg`);
+                    likeContainer.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1500);
+                }
+            }, stepTime);
+        }
+
         getEl('next2').onclick = () => { updateEnergy(-15); fadeTransition('tram1', '', () => showModal('question-pop')); };
-        
-        // CẢI TIẾN 3: Thêm popup phản hồi khi chọn "cóa"
+
+        // --- GIAI ĐOẠN 3: CÂU HỎI & KÝ ỨC ---
         getEl('coa').onclick = () => closeModal('question-pop', () => showModal('coa-response-pop'));
         getEl('continue-to-tram2').onclick = () => closeModal('coa-response-pop', () => fadeTransition('', 'tram2'));
-
+        getEl('hem').addEventListener('mouseover', (e) => {
+            const btn = e.target;
+            const parent = btn.parentElement.getBoundingClientRect();
+            btn.style.position = 'absolute';
+            btn.style.top = `${Math.random() * (parent.height - btn.offsetHeight)}px`;
+            btn.style.left = `${Math.random() * (parent.width - btn.offsetWidth)}px`;
+        });
+        document.querySelectorAll('.cloud').forEach(cloud => {
+            cloud.onclick = () => {
+                getEl('memory-photo').src = cloud.dataset.photo; showModal('photo-viewer');
+                if (!cloud.classList.contains('viewed')) {
+                    cloud.classList.add('viewed'); cloud.style.opacity = '0.6';
+                    state.viewedClouds++;
+                    if (state.viewedClouds === 4) {
+                        setTimeout(() => showModal('memories-pop'), 1000);
+                    }
+                }
+            }
+        });
+        
+        function continueToGame() {
+            closeModal('notify-continue-pop', () => {
+                updateEnergy(-30); 
+                fadeTransition('tram2', 'tram4', startEnergyDrain);
+            });
+        }
 
         // --- GIAI ĐOẠN 4: GAME ---
+        let game, ctx, player, items, score, gameLoop, gamePhase, spawnInterval;
+        
+        function startEnergyDrain() {
+            document.querySelector('.dim-overlay').classList.add('dim');
+            showModal('recharge-pop');
+        }
+        getEl('nap').onclick = () => closeModal('recharge-pop', () => showModal('game-rules-pop'));
+        
+        function cleanupGame() {
+            if (gameLoop) cancelAnimationFrame(gameLoop);
+            if (spawnInterval) clearInterval(spawnInterval);
+            if (game) { game.onmousemove = null; game.ontouchmove = null; }
+        }
+
         function initGame() {
             cleanupGame();
             getEl('game-section').classList.remove('hidden');
             game = getEl('game-canvas'); ctx = game.getContext('2d');
             const rect = game.getBoundingClientRect();
             game.width = rect.width; game.height = rect.height;
+
             player = { x: game.width / 2, y: game.height - 40, size: 20, emoji: '😇' };
             items = []; score = 0; gamePhase = 'normal';
             state.assistantAvailable = false; state.assistantUsed = false;
             getEl('score-display').textContent = score;
-            getEl('open-gift').classList.add('hidden'); getEl('summon-assistant-btn').classList.add('hidden');
+            getEl('open-gift').classList.add('hidden');
+            getEl('summon-assistant-btn').classList.add('hidden');
             
-            // CẢI TIẾN 4: Thêm điều khiển bằng cảm ứng
             const movePlayer = (clientX) => {
                 const currentRect = game.getBoundingClientRect();
                 player.x = clientX - currentRect.left;
             };
             game.onmousemove = e => movePlayer(e.clientX);
             game.ontouchmove = e => { e.preventDefault(); movePlayer(e.touches[0].clientX); };
-            
+
             spawnInterval = setInterval(spawnItem, 500);
             gameLoop = requestAnimationFrame(updateGame);
         }
-
+        
         function spawnItem() {
             const itemTypes = { good: [{ emoji: '🍦', points: 5, size: 20 }, { emoji: '🍰', points: 5, size: 20 }, { emoji: '🎂', points: 10, size: 25 }], bad: [{ emoji: '💣', points: -3, size: 20 }] };
             let type;
-            // CẢI TIẾN 4: Thêm chế độ bão bom
-            if (gamePhase === 'bombardment' || (gamePhase === 'impossible' && !state.assistantUsed)) {
+            if (gamePhase === 'bombardment' && !state.assistantUsed) {
                 type = itemTypes.bad[0];
             } else {
                 const choice = Math.random() > 0.4 ? 'good' : 'bad';
@@ -343,48 +550,50 @@
         }
         
         function updateGame() {
-            // ... (Phần vẽ và xử lý va chạm không đổi)
+            ctx.clearRect(0, 0, game.width, game.height);
+            ctx.font = `${player.size * 1.5}px Arial`; 
+            ctx.fillText(player.emoji, player.x - player.size, player.y + player.size/2);
+            if (state.assistantUsed) { ctx.beginPath(); ctx.arc(player.x, player.y - 5, player.size * 2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(74, 179, 255, 0.3)'; ctx.fill(); }
+            for (let i = items.length - 1; i >= 0; i--) {
+                let item = items[i]; item.y += item.speed;
+                ctx.font = `${item.size * 1.5}px Arial`; ctx.fillText(item.emoji, item.x - item.size, item.y + item.size/2);
+                const dist = Math.hypot(player.x - item.x, player.y - item.y);
+                if (dist < player.size + item.size) { if (item.points < 0 && state.assistantUsed) { items.splice(i, 1); continue; } score += item.points; items.splice(i, 1); }
+                else if (item.y > game.height + item.size) { items.splice(i, 1); }
+            }
             score = Math.max(0, score); getEl('score-display').textContent = score;
 
-            // CẢI TIẾN 4: Kích hoạt chế độ bão bom
-            if (score >= 80 && !state.assistantUsed) {
-                gamePhase = 'bombardment';
-            } else if (score < 50) {
-                gamePhase = 'normal';
-            }
-
-            if (gamePhase === 'bombardment' && !state.assistantAvailable && !state.assistantUsed) {
-                state.assistantAvailable = true; showModal('assistant-needed-pop'); getEl('summon-assistant-btn').classList.remove('hidden');
-            }
+            if (score >= 80 && !state.assistantUsed) { gamePhase = 'bombardment'; } 
+            else if (score < 50) { gamePhase = 'normal'; }
+            
+            if (gamePhase === 'bombardment' && !state.assistantAvailable && !state.assistantUsed) { state.assistantAvailable = true; showModal('assistant-needed-pop'); getEl('summon-assistant-btn').classList.remove('hidden'); }
             if (score >= config.gameWinScore) { getEl('open-gift').classList.remove('hidden'); getEl('summon-assistant-btn').classList.add('hidden'); cleanupGame(); return; }
             gameLoop = requestAnimationFrame(updateGame);
         }
         
+        getEl('summon-assistant-btn').onclick = () => { if (state.assistantAvailable && !state.assistantUsed) { state.assistantUsed = true; player.emoji = '🐟'; gamePhase = 'normal'; getEl('summon-assistant-btn').classList.add('hidden'); } else if (!state.assistantAvailable){ showToast('Trợ thủ đang bận òi'); } };
+        getEl('open-gift').onclick = () => { state.energy = 100; updateEnergy(0); document.querySelector('.dim-overlay').classList.remove('dim'); fadeTransition('tram4', '', () => showModal('phase3-pass-pop')); };
+        
         // --- GIAI ĐOẠN 5: KHO BÁU ---
+        function copyCode(element) { navigator.clipboard.writeText(element.textContent).then(() => showToast('Đã sao chép cú pháp!')); }
         getEl('submit-pass2').onclick = () => {
             if (getEl('pass-input2').value.trim().toLowerCase() === config.password2.trim().toLowerCase()) {
                 closeModal('phase3-pass-pop', () => { 
                     fadeTransition('', 'phase3', () => { 
                         const chest = getEl('treasure').querySelector('.chest'); 
                         chest.classList.add('open');
-                        
-                        // CẢI TIẾN 5: Thêm pháo hoa và luồng popup mới
                         confetti({ particleCount: 200, spread: 120, origin: { y: 0.6 } });
-                        
                         setTimeout(() => {
-                           getEl('phase3').classList.add('hidden'); // Ẩn rương đi
-                           showModal('reward1-pop'); // Hiện popup quà 1
+                           getEl('phase3').classList.add('hidden');
+                           showModal('reward1-pop');
                         }, 1500);
                     }); 
                 });
             } else { alert('Mật khẩu sai bét! Hỏi lại đi hehe'); }
         };
 
-        // --- KHỞI ĐỘNG VÀ CÁC HÀM KHÁC (Đã rút gọn cho dễ nhìn) ---
-        window.onload = () => { 
-            // Tất cả các hàm và sự kiện onclick khác được giữ nguyên
-            // ... (setupLockScreen, unlock, startWelcome, v.v...)
-        };
+        // --- KHỞI ĐỘNG ---
+        window.onload = () => { setupLockScreen(); };
     </script>
 </body>
 </html>
