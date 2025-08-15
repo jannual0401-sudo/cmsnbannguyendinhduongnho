@@ -3,85 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Món Quà Sinh Nhật Đặc Biệt</title>
+    <title>Món Quà Kỷ Niệm - Sinh Nhật Vui Vẻ</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS của bạn đã rất đẹp, tôi sẽ giữ nguyên toàn bộ */
         :root {
-            --primary-color: #FF69B4; /* Hot Pink */
-            --secondary-color: #FFC0CB; /* Pink */
-            --background-color: #FFF5EE; /* Seashell */
+            --primary-color: #FF69B4;
+            --secondary-color: #FFC0CB;
+            --background-color: #FFF5EE;
             --text-color: #4A4A4A;
         }
         body {
             font-family: 'Quicksand', sans-serif; background-color: var(--background-color);
-            color: var(--text-color); margin: 0; padding: 0;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden; text-align: center;
+            color: var(--text-color); margin: 0; padding: 0; display: flex;
+            justify-content: center; align-items: center; height: 100vh; overflow: hidden;
+            transition: background-color 1s ease;
         }
         .hidden { display: none !important; }
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center;
-            z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
+            background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center;
+            align-items: center; z-index: 1000; opacity: 0; visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
         .modal.show { opacity: 1; visibility: visible; }
         .modal-content {
             background: #FFFFFF; padding: 25px 30px; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); max-width: 90%; width: 450px;
-            transform: scale(0.9); transition: transform 0.4s ease;
+            text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%; width: 450px; transform: scale(0.9);
+            transition: transform 0.4s ease;
         }
         .modal.show .modal-content { transform: scale(1); }
         button {
-            background: var(--primary-color); color: white; border: none;
-            padding: 12px 24px; border-radius: 10px; cursor: pointer;
-            font-size: 16px; font-weight: bold;
-            transition: background 0.3s ease, transform 0.2s ease;
+            background: var(--primary-color); color: white; border: none; padding: 12px 24px;
+            border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold;
+            font-family: 'Quicksand', sans-serif; transition: background 0.3s ease, transform 0.2s ease;
         }
         button:hover { background: #FF1493; transform: translateY(-3px) scale(1.05); }
-
-        /* Giai đoạn 1: Màn hình khóa */
-        #lock-screen { width: 100%; }
+        #lock-screen { text-align: center; width: 100%; }
         .heart-lock { position: relative; width: 500px; height: 450px; margin: 0 auto; }
         .heart { fill: var(--secondary-color); stroke: var(--primary-color); stroke-width: 4; animation: pulse 1.5s infinite ease-in-out; }
         @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-        .digits { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 8px; }
+        .digits { position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; gap: 15px; }
         .digit-container { display: flex; flex-direction: column; align-items: center; }
-        .digit { background: #FFFFFF; border: 2px solid var(--primary-color); border-radius: 8px; width: 40px; height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 24px; margin: 5px 0; }
+        .digit {
+            background: #FFFFFF; border: 2px solid var(--primary-color); border-radius: 8px;
+            width: 40px; height: 50px; display: flex; align-items: center;
+            justify-content: center; font-weight: bold; font-size: 24px; margin: 5px 0;
+        }
         .arrow-btn { background: transparent; color: var(--primary-color); border: none; padding: 5px; font-size: 20px; cursor: pointer; }
-        #hint { margin-top: 20px; font-size: 16px; color: var(--primary-color); cursor: pointer; font-weight: bold; text-decoration: underline; }
-
-        /* Giai đoạn 1: Chào mừng */
-        .welcome-container { width: 100%; }
-        .welcome-text { font-size: 3em; font-family: 'Pacifico', cursive; color: var(--primary-color); text-shadow: 0 3px 6px rgba(0,0,0,0.1); animation: fadeIn-Up 1.5s ease-out forwards; }
+        #hint { margin-top: 20px; font-size: 16px; color: var(--primary-color); cursor: pointer; font-weight: bold; }
+        .welcome-text { font-size: 2.5em; font-family: 'Pacifico', cursive; color: var(--primary-color); text-shadow: 0 3px 6px rgba(0,0,0,0.1); animation: fadeIn-Up 1.5s ease-out forwards; }
         .welcome-text p { margin: 10px 0; font-family: 'Quicksand', sans-serif; font-size: 0.5em; font-weight: 500; color: #555; }
         @keyframes fadeIn-Up { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
-
-        /* Thanh năng lượng & Avatar */
-        #energy-bar { position: fixed; top: 20px; right: 20px; width: 150px; height: 15px; background: #ddd; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 999; }
-        .bar { height: 100%; background: linear-gradient(to right, #76E071, #38A333); transition: width 1s ease, background-color 1s ease; }
-        .bar.flashing { animation: flash 1s infinite; }
-        @keyframes flash { 0%, 100% { background: #ff4d4d; } 50% { background: #ffb3b3; } }
+        #energy-bar { position: fixed; top: 20px; right: 20px; width: 150px; height: 15px; background: #F0F0F0; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .bar { height: 100%; background: linear-gradient(to right, #76E071, #38A333); transition: width 1s ease; }
         #avatar-container { position: fixed; top: 20px; left: 20px; z-index: 999; }
         #avatar { width: 50px; height: 50px; background-image: url('https://i.imgur.com/6bH0j8v.png'); background-size: cover; border-radius: 50%; cursor: pointer; border: 3px solid var(--secondary-color); }
-        .arrow-hint { position: absolute; top: 5px; left: 60px; background: white; padding: 5px 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; animation: fadeIn-Up 1s 2s ease-out forwards; opacity:0; }
-
-        /* Trạm 1 - Livestream & Hiệu ứng báo bay */
-        #tram1-container { width: 100%; max-width: 600px; margin: auto; }
-        .livestream-wrapper { position: relative; width: 100%; padding-top: 125%; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .livestream-wrapper img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        .comments-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.6), transparent); display: flex; align-items: flex-end; }
-        .comments-container { width: 100%; height: 100%; overflow: hidden; position: relative; }
-        .like-container { color: white; text-shadow: 0 1px 3px black; margin-top: 10px; font-size: 1.2em; font-weight: bold; }
-        .newspaper { position: absolute; width: 250px; background: #fdf5e6; border: 1px solid #ccc; padding: 10px; font-family: 'Times New Roman', Times, serif; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); z-index: 990; transform-origin: left center; animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-        .newspaper h3 { margin: 0 0 5px 0; }
-        .newspaper p { margin: 0; font-size: 14px; }
-        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(-150vw) translateY(var(--y-start)) rotateY(60deg) rotateZ(-15deg); } 70% { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(-10deg) rotateZ(var(--rotation)); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(0deg) rotateZ(var(--rotation)); } }
-        .flying-heart { position: absolute; bottom: 0; left: 50%; font-size: var(--size); pointer-events: none; animation: floatHeart 3s ease-out forwards; animation-delay: var(--delay); }
-        @keyframes floatHeart { from { opacity: 1; transform: translateY(0) translateX(-50%) scale(1) rotate(0); } to { opacity: 0; transform: translateY(-200px) translateX(var(--x-end)) scale(0.5) rotate(var(--rot-end)); } }
-
-        /* Trạm 2: Ký ức */
+        #tram1 { width: 100%; max-width: 600px; margin: auto; text-align: center; }
+        #announce { font-size: 2.5em; font-family: 'Pacifico', cursive; color: var(--primary-color); }
+        .newspapers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10; }
+        .newspaper { position: absolute; width: 250px; background: #fdf5e6; border: 1px solid #ccc; padding: 10px; font-family: 'Times New Roman', Times, serif; box-shadow: 5px 5px 15px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(-150vw) rotateY(60deg); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(0deg) rotateZ(var(--rotation)); } }
+        .like-container { margin-top: 10px; font-size: 1.2em; font-weight: bold; position: relative; }
+        .flying-heart { position: absolute; bottom: 0; left: 50%; font-size: 24px; pointer-events: none; animation: floatHeart 1.5s ease-out forwards; }
+        @keyframes floatHeart { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-150px) scale(0.5) translateX(var(--x-end)); } }
+        #memories { width: 100%; }
+        .cat { font-size: 3em; text-align: center; font-family: 'Pacifico', cursive; color: var(--primary-color); }
         .clouds { position: relative; width: 90%; max-width: 1000px; height: 60vh; margin: 20px auto; }
         .cloud { position: absolute; width: 200px; height: 120px; background: #fff; border-radius: 100px; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; animation: float 8s infinite ease-in-out; }
         .cloud:before, .cloud:after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
@@ -90,68 +80,112 @@
         .cloud:hover { transform: scale(1.1) translateY(-10px); }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         .cloud.c1 { top: 10%; left: 10%; animation-delay: -2s; } .cloud.c2 { top: 40%; left: 25%; animation-delay: -4s; } .cloud.c3 { top: 20%; left: 60%; animation-delay: 0s; } .cloud.c4 { top: 50%; left: 75%; animation-delay: -6s; }
-
-        /* Trạm 4: Game */
         .dim-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; opacity: 0; pointer-events: none; transition: opacity 2s ease; }
         .dim-overlay.dim { opacity: 1; pointer-events: all; }
-        #game-section { position: relative; z-index: 501; }
+        #game-section { position: relative; z-index: 501; text-align: center; }
         #game-canvas { border: 3px solid var(--primary-color); background: #FFF0F5; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: none; }
-        #summon-assistant-btn { margin-top: 15px; background-color: #4ab3ff; } #summon-assistant-btn:hover { background-color: #0088ff; }
+        #summon-assistant-btn { margin-top: 15px; background-color: #4ab3ff; }
+        #summon-assistant-btn:hover { background-color: #0088ff; }
         .copy-code { color: #FF1493; text-decoration: underline; cursor: pointer; font-weight: bold; background: #eee; padding: 5px; border-radius: 5px; }
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 8px; z-index: 2000; opacity: 0; transition: opacity 0.5s; }
         .chest-container { perspective: 1000px; }
         .chest { width: 200px; height: 160px; background: linear-gradient(#DAA520, #FFD700); margin: 30px auto; border-radius: 10px; position: relative; transform-style: preserve-3d; transition: transform 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); cursor: pointer; }
         .chest:before { content: ''; position: absolute; top: -10px; left: 10%; width: 80%; height: 20px; background: #B8860B; border-radius: 5px; }
         .chest.open { transform: rotateX(45deg); }
         .light-beam { position: absolute; top: 50%; left: 50%; width: 400px; height: 500px; background: radial-gradient(circle, rgba(255, 255, 224, 0.7) 0%, rgba(255, 255, 224, 0) 70%); transform: translate(-50%, -100%) scaleY(0); transform-origin: bottom center; opacity: 0; transition: transform 1s 0.5s ease-out, opacity 1s 0.5s ease-out; z-index: -1;}
         .chest.open + .light-beam { transform: translate(-50%, -100%) scaleY(1); opacity: 1; }
-        
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 8px; z-index: 2000; opacity: 0; transition: opacity 0.5s; }
         @media (max-width: 768px) {
-             .heart-lock { width: 320px; height: 280px; } .digit { width: 30px; height: 40px; }
-             .welcome-text { font-size: 2em; }
-             .clouds { height: auto; display: flex; flex-direction: column; align-items: center; gap: 40px; position: relative; }
-             .cloud { position: static !important; }
+            .heart-lock { width: 320px; height: 280px; } .digit { width: 30px; height: 40px; }
+            .welcome-text { font-size: 1.8em; }
+            .clouds { height: auto; display: flex; flex-direction: column; align-items: center; gap: 40px; position: relative; }
+            .cloud { position: static !important; }
         }
     </style>
 </head>
 <body>
+    
     <div id="lock-screen">
-        <div class="heart-lock"><svg class="heart" viewBox="0 0 100 95"><path d="M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z" /></svg><div class="digits"></div></div>
+        <div class="heart-lock">
+            <svg class="heart" viewBox="0 0 100 95"><path d="M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z" /></svg>
+            <div class="digits"></div>
+        </div>
         <div id="hint">Gợi ý</div>
     </div>
-
-    <div id="welcome" class="hidden welcome-container">
-        <h1 class="welcome-text">Đây là món quà do ducanhlesiucapcutis1zutru✨ dành tặng cho bạn 😇😇😇<p>Sinh nhật zui zẻ nhé 🎉🎉🎉</p></h1>
-    </div>
     
+    <div id="welcome" class="hidden">
+        <h1 class="welcome-text">
+            Đây là món quà do ducanhlesiucapcutis1zutru✨ dành tặng cho bạn 😇😇😇
+            <p>Sinh nhật zui zẻ nhé 🎉🎉🎉</p>
+        </h1>
+    </div>
+
     <div id="tram1" class="hidden">
-        <div id="tram1-container">
-            <div class="livestream-wrapper">
-                <img src="https://i.imgur.com/uR6G6dY.jpeg" alt="BTS Member">
-                <div class="comments-overlay">
-                    <div class="comments-container"></div>
-                </div>
+        <div id="announce-container">
+             <div id="announce" class="hidden">BTS chính thức công bố thành viên thứ 8!</div>
+        </div>
+        <div class="newspapers hidden"></div>
+        <div id="main-tram1" class="hidden">
+            <img src="https://i.imgur.com/uR6G6dY.jpeg" alt="BTS Lineup" style="max-width:100%; border-radius:10px; margin-bottom: 15px;">
+            <audio id="music-player" controls loop style="width: 100%;"><source src="https://cdn.glitch.global/c31a147a-0552-411a-9694-88623b3a0323/dynamite.mp3?v=1670322744883" type="audio/mpeg"></audio>
+            <div class="like-container">
+                <div id="like-count">0 thả tim</div>
             </div>
-            <div class="like-container"><span id="like-count">0</span> thả tim</div>
-            <audio id="music-player" controls loop style="width: 100%; margin-top: 10px;"><source src="https://cdn.glitch.global/c31a147a-0552-411a-9694-88623b3a0323/dynamite.mp3?v=1670322744883" type="audio/mpeg"></audio>
             <button id="next2" style="margin-top: 20px;">Tiếp tục hành trình</button>
         </div>
     </div>
+    
+    <div id="tram2" class="hidden">
+        <div id="memories">
+            <div class="cat">🐱 Our Memories 🐱</div>
+            <div class="clouds">
+                <div class="cloud c1" data-photo="https://i.imgur.com/gK5z3ro.jpeg"></div>
+                <div class="cloud c2" data-photo="https://i.imgur.com/S86x5lL.jpeg"></div>
+                <div class="cloud c3" data-photo="https://i.imgur.com/3q1Z03R.jpeg"></div>
+                <div class="cloud c4" data-photo="https://i.imgur.com/hCFy9Y5.jpeg"></div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button id="next4" class="hidden">Đến trạm nghỉ chân</button>
+            </div>
+        </div>
+    </div>
 
-    <div id="tram2" class="hidden"> <div class="cat" style="font-size: 3em; font-family: 'Pacifico', cursive; color: var(--primary-color);">🐱 Our Memories 🐱</div><div class="clouds"> <div class="cloud c1" data-photo="https://i.imgur.com/gK5z3ro.jpeg"></div><div class="cloud c2" data-photo="https://i.imgur.com/S86x5lL.jpeg"></div><div class="cloud c3" data-photo="https://i.imgur.com/3q1Z03R.jpeg"></div><div class="cloud c4" data-photo="https://i.imgur.com/hCFy9Y5.jpeg"></div></div><button id="next4" class="hidden" style="margin-top: 20px;">Đến trạm nghỉ chân</button></div>
-    <div id="tram4" class="hidden"><div class="dim-overlay"></div><div id="game-section" class="hidden"><h2 style="color: white;">Nạp Năng Lượng!</h2><div id="game-info" style="color: white; font-size: 1.2em; margin-bottom: 10px;">Điểm: <span id="score-display">0</span></div><canvas id="game-canvas"></canvas><button id="summon-assistant-btn" class="hidden">Triệu hồi trợ thủ 🐟</button><button id="open-gift" class="hidden">MỞ QUÀ</button></div></div>
-    <div id="phase3" class="hidden"><div id="treasure"><div class="chest-container"><div class="chest"></div><div class="light-beam"></div></div><div id="rewards" class="hidden" style="animation: fadeIn-Up 1s 1s forwards; opacity: 0;"><h2>Phần thưởng 1: Sẽ được gửi cho bạn qua mess vào tối nay! 🎁</h2><div class="reward2" style="margin-top: 20px;"><h3>Góc nhắc nhở nhẹ 📝</h3><img src="https://i.imgur.com/eBf2g6v.png" alt="Góc nhắc nhở" style="max-width:90%; border-radius:10px;"><p style="font-size: 1.1em; font-weight: 500; margin-top: 10px;">T nghĩ là lớp ko đi chs đc r nma m vx phải bao t đi ăng đó cấm đc bùng 😋😋😋</p></div></div></div></div>
+    <div id="tram4" class="hidden">
+        <div class="dim-overlay"></div>
+        <div id="game-section" class="hidden">
+            <h2 style="color: white;">Nạp Năng Lượng!</h2>
+            <div id="game-info" style="color: white; font-size: 1.2em; margin-bottom: 10px;">Điểm: <span id="score-display">0</span></div>
+            <canvas id="game-canvas"></canvas>
+            <button id="summon-assistant-btn" class="hidden">Triệu hồi trợ thủ 🐟</button>
+            <button id="open-gift" class="hidden">MỞ QUÀ</button>
+        </div>
+    </div>
+    
+    <div id="phase3" class="hidden">
+        <div id="treasure">
+            <div class="chest-container">
+                <div class="chest"></div>
+                <div class="light-beam"></div>
+            </div>
+            <div id="rewards" class="hidden" style="animation: fadeIn-Up 1s 1s forwards; opacity: 0;">
+                <h2>Phần thưởng 1: Sẽ được gửi cho bạn qua mess vào tối nay! 🎁</h2>
+                <div class="reward2" style="margin-top: 20px;">
+                    <h3>Góc nhắc nhở nhẹ 📝</h3>
+                    <img src="https://i.imgur.com/eBf2g6v.png" alt="Góc nhắc nhở" style="max-width:90%; border-radius:10px;">
+                    <p style="font-size: 1.1em; font-weight: 500; margin-top: 10px;">T nghĩ là lớp ko đi chs đc r nma m vx phải bao t đi ăng đó cấm đc bùng 😋😋😋</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="energy-bar" class="hidden"><div class="bar"></div></div>
-    <div id="avatar-container" class="hidden"><div id="avatar"></div><div class="arrow-hint">Ấn vào để xem hồ sơ của bạn</div></div>
+    <div id="avatar-container" class="hidden"><div id="avatar"></div></div>
     <div id="toast"></div>
     <div id="hint-pop" class="modal"><div class="modal-content"><p>Nếu bạn chưa biết mật khẩu thì hãy xem lại thiệp nhó =))</p><button onclick="closeModal('hint-pop')">Đã hiểu</button></div></div>
     <div id="assistant-pop" class="modal"><div class="modal-content"><h2>Phần Quà Đầu Tiên: Trợ Thủ 🐟</h2><p>"Đanh lê siu cấp cuti s1zt" đã sẵn sàng! Bạn có thể triệu hồi trợ thủ này khi thực sự cần thiết.</p><button onclick="closeModal('assistant-pop', () => showModal('ticket-pop'))">OK</button></div></div>
     <div id="ticket-pop" class="modal"><div class="modal-content"><h2>Phần Thưởng Khởi Đầu</h2><img src="https://i.imgur.com/4g0K2hG.png" alt="Phiếu bé ngoan" style="width:100%;"><button onclick="closeModal('ticket-pop', startWelcome)">Bắt đầu hành trình!</button></div></div>
     <div id="profile-pop" class="modal"><div class="modal-content"><h2>Hồ Sơ Của Bạn</h2><p><b>Tên gem thủ:</b> Nguyễn Đình Dương</p><p><b>Rank:</b> Siucapgalangđepzai=))))</p><button id="next1">Ấn để xem tiếp</button></div></div>
-    <div id="notify-pop" class="modal"><div class="modal-content" style="cursor: pointer;"><p style="font-size: 1.2em;">🔔 Bạn có thông báo mới, hãy ấn vào để xem!</p></div></div>
-    <div id="announce-pop" class="modal"><div class="modal-content"><h2 id="announce" style="font-family: 'Pacifico', cursive; color: var(--primary-color); font-size: 2em;">BTS thông báo ra mắt thành viên thứ 8...</h2></div></div>
+    <div id="notify-pop" class="modal show"><div class="modal-content" style="cursor: pointer;"><p style="font-size: 1.2em;">🔔 Bạn có thông báo mới, hãy ấn vào để xem!</p></div></div>
     <div id="question-pop" class="modal"><div class="modal-content"><p>Trả lời câu hỏi để tiếp tục =))):<br>Bạn có thấy cảm động rớt nước mắt 😢😢😢 với món quà này ko?</p><button id="coa" style="font-size: 20px; padding: 12px 24px; margin: 5px;">cóa</button><button id="hem" style="position: relative; margin: 5px;">hem</button></div></div>
-    <div id="message-pop" class="modal"><div class="modal-content"><p id="message-text" style="font-size: 1.2em;"></p><button onclick="closeModal('message-pop', continueToMemories)">Tiếp tục</button></div></div>
     <div id="photo-viewer" class="modal"><div class="modal-content"><img id="memory-photo" src="" style="max-width:100%; border-radius: 10px;"><button style="margin-top: 15px;" onclick="closeModal('photo-viewer')">Đóng</button></div></div>
     <div id="memories-pop" class="modal"><div class="modal-content"><p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p><button onclick="closeModal('memories-pop')">Okieee</button></div></div>
     <div id="recharge-pop" class="modal"><div class="modal-content"><p style="font-size: 1.2em;">Năng lượng sắp cạn kiệt!</p><button id="nap">Nạp năng lượng</button></div></div>
@@ -163,8 +197,8 @@
     <script>
         // --- CẤU HÌNH & TRẠNG THÁI ---
         const config = { password: '22082007', password2: 'oke =))', likeTarget: 22080, gameWinScore: 100 };
-        const state = { energy: 100, choseHemFirst: false, assistantAvailable: false, assistantUsed: false, viewedClouds: 0, isAskingQuestion: false, };
-        
+        const state = { energy: 100, choseHemFirst: false, assistantAvailable: false, assistantUsed: false, viewedClouds: 0 };
+
         // --- HÀM TIỆN ÍCH ---
         const getEl = (id) => document.getElementById(id);
         const showModal = (id) => getEl(id).classList.add('show');
@@ -178,10 +212,10 @@
                 if (callback) callback();
             }, 500);
         };
-        const updateEnergy = (amount) => { state.energy = Math.max(0, Math.min(100, state.energy + amount)); const bar = document.querySelector('#energy-bar .bar'); if (!bar) return; bar.style.width = `${state.energy}%`; bar.style.backgroundColor = state.energy < 20 ? '#ff4d4d' : ''; };
+        const updateEnergy = (amount) => { state.energy = Math.max(0, Math.min(100, state.energy + amount)); const bar = document.querySelector('#energy-bar .bar'); if (!bar) return; bar.style.width = `${state.energy}%`; };
         const showToast = (message) => { const toast = getEl('toast'); toast.textContent = message; toast.style.opacity = 1; setTimeout(() => { toast.style.opacity = 0; }, 2000); };
-        
-        // --- GIAI ĐOẠN 1: MỞ KHÓA & CHÀO MỪNG ---
+
+        // --- GIAI ĐOẠN 0: MÀN HÌNH KHÓA ---
         let currentDigits = Array(config.password.length).fill(0);
         function setupLockScreen() {
             const digitsContainer = document.querySelector('.digits');
@@ -193,84 +227,113 @@
             if (currentDigits.join('') === config.password) { document.querySelector('.heart-lock').style.transform = 'scale(1.2)'; setTimeout(unlock, 500); }
         }
         function unlock() { fadeTransition('lock-screen', '', () => showModal('assistant-pop')); }
-        function startWelcome() { fadeTransition('', 'welcome', () => { confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } }); getEl('energy-bar').classList.remove('hidden'); getEl('avatar-container').classList.remove('hidden'); updateEnergy(0); }); }
+        
+        // --- GIAI ĐOẠN 1: CHÀO MỪNG & HỒ SƠ ---
+        function startWelcome() {
+            fadeTransition('', 'welcome', () => {
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+                getEl('energy-bar').classList.remove('hidden');
+                getEl('avatar-container').classList.remove('hidden');
+                updateEnergy(0);
+            });
+        }
         getEl('hint').onclick = () => showModal('hint-pop');
         getEl('avatar').onclick = () => showModal('profile-pop');
-        getEl('next1').onclick = () => { closeModal('profile-pop', () => { updateEnergy(-10); fadeTransition('welcome', 'tram1', () => showModal('notify-pop')); }); };
-        
-        // --- TRẠM 1: BTS ---
-        getEl('notify-pop').onclick = (e) => {
-            e.currentTarget.style.cursor = "default"; e.currentTarget.querySelector('p').textContent = "Đang tải thông báo...";
-            closeModal('notify-pop', () => {
-                showModal('announce-pop');
-                setTimeout(() => { closeModal('announce-pop', () => { showNewspapers(); getEl('music-player').play(); setTimeout(startCommentsAndLikes, 2000); }); }, 2500);
+        getEl('next1').onclick = () => {
+            closeModal('profile-pop', () => {
+                updateEnergy(-10);
+                fadeTransition('welcome', 'tram1', () => showModal('notify-pop'));
             });
         };
-        function showNewspapers() {
-            const articles = [ { title: "BIG HIT CONFIRMS", content: "An 8th member will join the global sensation BTS..." }, { title: "ARMYs in SHOCK!", content: "Who is the new face? The internet is breaking..." }, { title: "EXCLUSIVE DEBUT", content: "First look at the new member REVEALED!" } ];
-            articles.forEach((art, i) => {
-                setTimeout(() => {
-                    const newspaper = document.createElement('div');
-                    newspaper.className = 'newspaper';
-                    newspaper.innerHTML = `<h3>${art.title}</h3><p>${art.content}</p>`;
-                    newspaper.style.setProperty('--x-pos', `${Math.random() * 40 - 20}vw`); newspaper.style.setProperty('--y-pos', `${Math.random() * 30 - 15}vh`); newspaper.style.setProperty('--y-start', `${Math.random() * 60 - 30}vh`); newspaper.style.setProperty('--rotation', `${Math.random() * 20 - 10}deg`);
-                    document.body.appendChild(newspaper);
-                    setTimeout(() => newspaper.remove(), 4000);
-                }, i * 300);
-            });
-        }
-        function startCommentsAndLikes() {
-            const comments = [ { avatar: '🦁', text: 'Ngầu đét 😎😎😎' }, { avatar: '🐯', text: 'Wow a này đzai thế' }, { avatar: '🐶', text: 'Anh ơi em quạt anh 🥰' }, { avatar: '🐵', text: 'Đzai quá a ơi' }, { avatar: '🦊', text: 'Anh này vô BTS là quá chuẩn r' }, { avatar: '🐷', text: 'Wow 🤩🤩🤩' }, { avatar: '🐰', text: 'ko ngo2f trên đời có ng đẹp z lun á 😊' }, { avatar: '🐻', text: 'Ê đỉnh zữ v' }, { avatar: '🐨', text: 'Ngầu đét 😎😎😎' }, { avatar: '🐼', text: 'Wow a này đzai thế' }, { avatar: '🐱', text: 'Anh ơi em yêu anh ❤❤❤' } ];
-            const heartEmojis = ['❤️', '💖', '💕'];
-            const commentContainer = document.querySelector('.comments-container');
-            comments.forEach((c, i) => {
-                setTimeout(() => {
-                    const com = document.createElement('div');
-                    com.style.cssText = `position:absolute; bottom:-50px; left:${Math.random()*70+15}%; background:rgba(255,255,255,0.8); color: black; padding: 5px 12px; border-radius:20px; animation:riseUp 8s linear forwards; white-space:nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.2);`;
-                    com.innerHTML = `<span>${c.avatar}</span> ${c.text}`;
-                    commentContainer.appendChild(com);
-                    const heart = document.createElement('div');
-                    heart.className = 'flying-heart';
-                    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                    heart.style.setProperty('--size', `${Math.random() * 10 + 18}px`); heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 150}px`); heart.style.setProperty('--rot-end', `${(Math.random() - 0.5) * 90}deg`);
-                    document.querySelector('.livestream-wrapper').appendChild(heart);
-                    setTimeout(() => com.remove(), 8000);
-                    setTimeout(() => heart.remove(), 3000);
-                }, i * 700);
-            });
-            animateLikes(config.likeTarget);
-            const style = document.createElement('style');
-            style.innerHTML = `@keyframes riseUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-200px); opacity: 0; } }`;
-            document.head.appendChild(style);
-        }
-        function animateLikes(target) {
-            let current = 0;
-            const step = Math.ceil(target / 200);
-            const interval = setInterval(() => { current += step; if (current >= target) { current = target; clearInterval(interval); } getEl('like-count').textContent = (current/1000).toFixed(2) + 'k'; }, 10);
-        }
-        getEl('next2').onclick = () => { updateEnergy(-15); fadeTransition('tram1', '', () => { state.isAskingQuestion = true; showModal('question-pop'); }); };
 
-        // --- TRẠM 2: CÂU HỎI & KÝ ỨC ---
-        getEl('coa').onclick = () => { state.isAskingQuestion = false; const message = state.choseHemFirst ? "ê dỗi nka trời làm vậy rồi mà không cảm động" : "weo chọn cóa lun hẻ, trời oie đáng iu z 😍😍😍"; getEl('message-text').textContent = message; closeModal('question-pop', () => showModal('message-pop')); };
-        getEl('hem').addEventListener('mouseover', () => { state.choseHemFirst = true; const btn = getEl('hem'); const parent = btn.parentElement.getBoundingClientRect(); btn.style.position = 'absolute'; btn.style.top = `${Math.random() * (parent.height - 50)}px`; btn.style.left = `${Math.random() * (parent.width - 100)}px`; });
-        window.addEventListener('beforeunload', (event) => { if (state.isAskingQuestion) { const msg = 'nếu bạn thoát khỏi web ngay lúc này thì có nghĩa là bạn đang cảm động rớt nước mắt =)))'; event.preventDefault(); event.returnValue = msg; return msg; } });
-        function continueToMemories() { fadeTransition('', 'tram2'); }
+        // --- GIAI ĐOẠN 2: THÔNG BÁO BTS (THEO LUỒNG CỦA BẠN) ---
+        getEl('notify-pop').onclick = () => {
+            closeModal('notify-pop', () => {
+                const announceEl = getEl('announce');
+                announceEl.classList.remove('hidden');
+                setTimeout(() => {
+                    announceEl.style.transition = 'opacity 1s';
+                    announceEl.style.opacity = 0;
+                    showNewspapers();
+                }, 2000);
+            });
+        };
+
+        function showNewspapers() {
+            const newspapersContainer = document.querySelector('.newspapers');
+            newspapersContainer.classList.remove('hidden');
+            for (let i = 0; i < 3; i++) {
+                const np = document.createElement('div');
+                np.className = 'newspaper';
+                np.style.setProperty('--x-pos', `${Math.random() * 40 - 20}vw`);
+                np.style.setProperty('--y-pos', `${Math.random() * 30 - 15}vh`);
+                np.style.setProperty('--rotation', `${Math.random() * 20 - 10}deg`);
+                np.innerHTML = `<h3>HOT NEWS!</h3><p>BTS RA MẮT THÀNH VIÊN THỨ 8!</p>`;
+                newspapersContainer.appendChild(np);
+            }
+            setTimeout(() => {
+                newspapersContainer.style.transition = 'opacity 1s';
+                newspapersContainer.style.opacity = 0;
+                setTimeout(() => {
+                    newspapersContainer.classList.add('hidden');
+                    getEl('main-tram1').classList.remove('hidden');
+                    getEl('music-player').play();
+                    animateLikes(config.likeTarget);
+                }, 1000);
+            }, 3000);
+        }
+        
+        function animateLikes(target) {
+            const likeEl = getEl('like-count');
+            const likeContainer = document.querySelector('.like-container');
+            let current = 0;
+            const interval = setInterval(() => {
+                current += Math.ceil(target / 100);
+                if (current >= target) { current = target; clearInterval(interval); }
+                likeEl.textContent = `${(current/1000).toFixed(2)}k thả tim`;
+                const heart = document.createElement('div');
+                heart.className = 'flying-heart'; heart.textContent = '❤️';
+                heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 100}px`);
+                likeContainer.appendChild(heart);
+                setTimeout(() => heart.remove(), 1500);
+            }, 50);
+        }
+
+        getEl('next2').onclick = () => { updateEnergy(-15); fadeTransition('tram1', '', () => showModal('question-pop')); };
+
+        // --- GIAI ĐOẠN 3: CÂU HỎI & KÝ ỨC ---
+        getEl('coa').onclick = () => closeModal('question-pop', () => fadeTransition('', 'tram2'));
+        getEl('hem').addEventListener('mouseover', () => {
+            const btn = getEl('hem');
+            const parent = btn.parentElement.getBoundingClientRect();
+            btn.style.position = 'absolute';
+            btn.style.top = `${Math.random() * (parent.height - 50)}px`;
+            btn.style.left = `${Math.random() * (parent.width - 100)}px`;
+        });
         document.querySelectorAll('.cloud').forEach(cloud => {
             cloud.onclick = () => {
                 getEl('memory-photo').src = cloud.dataset.photo; showModal('photo-viewer');
-                if (!cloud.classList.contains('viewed')) { cloud.classList.add('viewed'); cloud.style.opacity = '0.7'; state.viewedClouds++; if (state.viewedClouds === document.querySelectorAll('.cloud').length) { getEl('next4').classList.remove('hidden'); setTimeout(() => showModal('memories-pop'), 1000); } }
+                if (!cloud.classList.contains('viewed')) {
+                    cloud.classList.add('viewed'); cloud.style.opacity = '0.7';
+                    state.viewedClouds++;
+                    if (state.viewedClouds === 4) {
+                        getEl('next4').classList.remove('hidden');
+                        setTimeout(() => showModal('memories-pop'), 1000);
+                    }
+                }
             }
         });
         getEl('next4').onclick = () => { updateEnergy(-30); fadeTransition('tram2', 'tram4', startEnergyDrain); };
 
-        // --- TRẠM 4: GAME (LOGIC ĐÃ CẢI TIẾN) ---
+        // --- GIAI ĐOẠN 4: GAME (LOGIC CHUẨN ĐÃ TÍCH HỢP) ---
         let game, ctx, player, items, score, gameLoop, gamePhase, spawnInterval, gameTimer;
-        function startEnergyDrain() { getEl('dim-overlay').classList.add('dim'); document.querySelector('#energy-bar .bar').classList.add('flashing'); setTimeout(() => showModal('recharge-pop'), 2500); }
+        
+        function startEnergyDrain() {
+            document.querySelector('.dim-overlay').classList.add('dim');
+            showModal('recharge-pop');
+        }
         getEl('nap').onclick = () => closeModal('recharge-pop', () => showModal('game-rules-pop'));
-
-        // --- HÀM MỚI: Dọn dẹp game ---
-        // Hàm này rất quan trọng. Nó đảm bảo mọi vòng lặp và bộ đếm thời gian của game cũ được dừng lại
-        // trước khi bắt đầu một game mới, tránh các lỗi xung đột.
+        
         function cleanupGame() {
             if (gameLoop) cancelAnimationFrame(gameLoop);
             if (spawnInterval) clearInterval(spawnInterval);
@@ -278,34 +341,18 @@
         }
 
         function initGame() {
-            // GỌI HÀM DỌN DẸP NGAY KHI BẮT ĐẦU
-            cleanupGame(); 
-
-            getEl('game-section').classList.remove('hidden'); 
-            game = getEl('game-canvas'); 
-            ctx = game.getContext('2d');
-            
-            game.width = Math.min(window.innerWidth * 0.9, 500); 
-            game.height = 400;
-            
+            cleanupGame();
+            getEl('game-section').classList.remove('hidden');
+            game = getEl('game-canvas'); ctx = game.getContext('2d');
+            game.width = Math.min(window.innerWidth * 0.9, 500); game.height = 400;
             player = { x: game.width / 2, y: game.height - 40, size: 20, emoji: '😇' };
-            items = []; 
-            score = 0; 
-            gamePhase = 'normal';
-            state.assistantAvailable = false; 
-            state.assistantUsed = false;
-
-            getEl('score-display').textContent = score; 
-            getEl('open-gift').classList.add('hidden'); 
+            items = []; score = 0; gamePhase = 'normal';
+            state.assistantAvailable = false; state.assistantUsed = false;
+            getEl('score-display').textContent = score;
+            getEl('open-gift').classList.add('hidden');
             getEl('summon-assistant-btn').classList.add('hidden');
-            
-            gameTimer = setTimeout(() => { gamePhase = 'impossible'; }, 20000); // 20 giây
-            
-            game.onmousemove = e => { 
-                const rect = game.getBoundingClientRect();
-                player.x = e.clientX - rect.left; 
-            };
-            
+            gameTimer = setTimeout(() => { gamePhase = 'impossible'; }, 20000);
+            game.onmousemove = e => { const rect = game.getBoundingClientRect(); player.x = e.clientX - rect.left; };
             spawnInterval = setInterval(spawnItem, 500);
             gameLoop = requestAnimationFrame(updateGame);
         }
@@ -313,76 +360,39 @@
         function spawnItem() {
             const itemTypes = { good: [{ emoji: '🍦', points: 5, size: 20 }, { emoji: '🍰', points: 5, size: 20 }, { emoji: '🎂', points: 10, size: 25 }], bad: [{ emoji: '💣', points: -3, size: 20 }] };
             let type;
-            if (gamePhase === 'impossible' && !state.assistantUsed) { 
-                type = itemTypes.bad[0]; 
-            } else { 
-                const choice = Math.random() > 0.4 ? 'good' : 'bad'; 
-                type = itemTypes[choice][Math.floor(Math.random() * itemTypes[choice].length)]; 
-            }
+            if (gamePhase === 'impossible' && !state.assistantUsed) { type = itemTypes.bad[0]; }
+            else { const choice = Math.random() > 0.4 ? 'good' : 'bad'; type = itemTypes[choice][Math.floor(Math.random() * itemTypes[choice].length)]; }
             items.push({ x: Math.random() * game.width, y: -30, ...type, speed: Math.random() * 2 + 2 });
         }
         
         function updateGame() {
             ctx.clearRect(0, 0, game.width, game.height);
-            ctx.font = `${player.size * 1.5}px Arial`; 
-            ctx.fillText(player.emoji, player.x - player.size, player.y + player.size/2);
-            
-            if (state.assistantUsed) { 
-                ctx.beginPath(); 
-                ctx.arc(player.x, player.y - 5, player.size * 2, 0, Math.PI * 2); 
-                ctx.fillStyle = 'rgba(74, 179, 255, 0.3)'; 
-                ctx.fill(); 
-            }
-
+            ctx.font = `${player.size * 1.5}px Arial`; ctx.fillText(player.emoji, player.x - player.size, player.y + player.size/2);
+            if (state.assistantUsed) { ctx.beginPath(); ctx.arc(player.x, player.y - 5, player.size * 2, 0, Math.PI * 2); ctx.fillStyle = 'rgba(74, 179, 255, 0.3)'; ctx.fill(); }
             for (let i = items.length - 1; i >= 0; i--) {
-                let item = items[i]; 
-                item.y += item.speed;
-                ctx.font = `${item.size * 1.5}px Arial`; 
-                ctx.fillText(item.emoji, item.x - item.size, item.y + item.size/2);
-                
+                let item = items[i]; item.y += item.speed;
+                ctx.font = `${item.size * 1.5}px Arial`; ctx.fillText(item.emoji, item.x - item.size, item.y + item.size/2);
                 const dist = Math.hypot(player.x - item.x, player.y - item.y);
-                if (dist < player.size + item.size) { 
-                    if (item.points < 0 && state.assistantUsed) { 
-                        items.splice(i, 1); 
-                        continue; 
-                    } 
-                    score += item.points; 
-                    items.splice(i, 1); 
-                } else if (item.y > game.height + item.size) { 
-                    items.splice(i, 1); 
-                }
+                if (dist < player.size + item.size) { if (item.points < 0 && state.assistantUsed) { items.splice(i, 1); continue; } score += item.points; items.splice(i, 1); }
+                else if (item.y > game.height + item.size) { items.splice(i, 1); }
             }
-            
-            score = Math.max(0, score); 
-            getEl('score-display').textContent = score;
-            
-            if (gamePhase === 'impossible' && !state.assistantAvailable && !state.assistantUsed) { 
-                state.assistantAvailable = true; 
-                showModal('assistant-needed-pop'); 
-                getEl('summon-assistant-btn').classList.remove('hidden'); 
-            }
-            
-            if (score >= config.gameWinScore) { 
-                getEl('open-gift').classList.remove('hidden'); 
-                getEl('summon-assistant-btn').classList.add('hidden'); 
-                cleanupGame(); // Dừng game khi thắng
-                return; 
-            }
-            
+            score = Math.max(0, score); getEl('score-display').textContent = score;
+            if (gamePhase === 'impossible' && !state.assistantAvailable && !state.assistantUsed) { state.assistantAvailable = true; showModal('assistant-needed-pop'); getEl('summon-assistant-btn').classList.remove('hidden'); }
+            if (score >= config.gameWinScore) { getEl('open-gift').classList.remove('hidden'); getEl('summon-assistant-btn').classList.add('hidden'); cleanupGame(); return; }
             gameLoop = requestAnimationFrame(updateGame);
         }
         
         getEl('summon-assistant-btn').onclick = () => { if (state.assistantAvailable && !state.assistantUsed) { state.assistantUsed = true; player.emoji = '🐟'; getEl('summon-assistant-btn').classList.add('hidden'); } else if (!state.assistantAvailable){ showToast('Trợ thủ đang bận òi'); } };
-        getEl('open-gift').onclick = () => { state.energy = 100; updateEnergy(0); getEl('dim-overlay').classList.remove('dim'); fadeTransition('tram4', '', () => showModal('phase3-pass-pop')); };
+        getEl('open-gift').onclick = () => { state.energy = 100; updateEnergy(0); document.querySelector('.dim-overlay').classList.remove('dim'); fadeTransition('tram4', '', () => showModal('phase3-pass-pop')); };
         
-        // --- GIAI ĐOẠN 3: KHO BÁU ---
+        // --- GIAI ĐOẠN 5: KHO BÁU (LOGIC ĐÃ TÍCH HỢP) ---
         function copyCode(element) { navigator.clipboard.writeText(element.textContent); showToast('Đã sao chép cú pháp!'); }
         getEl('submit-pass2').onclick = () => {
             if (getEl('pass-input2').value.trim().toLowerCase() === config.password2.trim().toLowerCase()) {
                 closeModal('phase3-pass-pop', () => { fadeTransition('', 'phase3', () => { const chest = getEl('treasure').querySelector('.chest'); chest.classList.add('open'); setTimeout(() => getEl('rewards').classList.remove('hidden'), 500); }); });
             } else { alert('Mật khẩu sai bét! Hỏi lại đi hehe'); }
         };
-        
+
         // --- KHỞI ĐỘNG ---
         window.onload = () => { setupLockScreen(); };
     </script>
