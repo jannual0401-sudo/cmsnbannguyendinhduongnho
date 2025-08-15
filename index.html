@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS không thay đổi so với phiên bản trước, bạn có thể giữ nguyên phần này */
         /* Global Styles */
         body {
             font-family: 'Quicksand', sans-serif;
@@ -420,6 +421,7 @@
             background: rgba(0,0,0,0.6);
             z-index: 500;
             opacity: 0;
+            pointer-events: none; /* Thêm dòng này để lớp phủ không bắt sự kiện click */
             transition: opacity 2s ease;
         }
         .dim-overlay.dim {
@@ -494,12 +496,7 @@
 
     <div id="tram4" class="hidden">
         <div class="dim-overlay"></div>
-        <div id="recharge-modal" class="modal hidden">
-            <div class="modal-content">
-                <p>Màn hình đang tối lại... Năng lượng sắp cạn!</p>
-                <button id="nap">Nạp năng lượng</button>
-            </div>
-        </div>
+        
         <div id="game-section" class="hidden">
             <div id="game-info">Điểm: <span id="score-display">0</span></div>
             <canvas id="game-canvas"></canvas>
@@ -515,6 +512,14 @@
     <div id="question-pop" class="modal hidden"><div class="modal-content"><p>Trả lời câu hỏi để tiếp tục: Bạn có thấy cảm động rớt nước mắt 😢 với món quà này không?</p><button id="coa" style="font-size: 20px; padding: 12px 24px;">Cóa</button> <button id="hem">Hem</button></div></div>
     <div id="photo-viewer" class="modal hidden"><div class="modal-content"><img id="memory-photo" src=""><button onclick="closeModal('photo-viewer')">Đóng</button></div></div>
     <div id="memories-pop" class="modal hidden"><div class="modal-content"><p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p><button onclick="closeModal('memories-pop')">Đóng</button></div></div>
+    
+    <div id="recharge-modal" class="modal hidden">
+        <div class="modal-content">
+            <p>Màn hình đang tối lại... Năng lượng sắp cạn!</p>
+            <button id="nap">Nạp năng lượng</button>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <script>
@@ -652,6 +657,38 @@
             animateLikes(22080);
         }
         
+        function animateLikes(target) {
+            const likeEl = document.querySelector('.like-count');
+            const likeContainer = document.querySelector('.like-container');
+            let currentLikes = 0;
+            const duration = 3000; // 3 giây
+            const stepTime = 50;
+            const steps = duration / stepTime;
+            const increment = target / steps;
+            
+            let likeInterval = setInterval(() => {
+                currentLikes += increment;
+                if (currentLikes >= target) {
+                    currentLikes = target;
+                    clearInterval(likeInterval);
+                }
+                likeEl.textContent = `${(currentLikes / 1000).toFixed(2)}k thả tim`;
+                
+                // Hiệu ứng tim bay
+                const heart = document.createElement('div');
+                heart.classList.add('flying-heart');
+                heart.textContent = '❤️';
+                heart.style.setProperty('--x-end', `${(Math.random() - 0.5) * 100}px`);
+                likeContainer.appendChild(heart);
+                setTimeout(() => heart.remove(), 1500);
+                
+            }, stepTime);
+        }
+        
+        getEl('next2').onclick = () => {
+             fadeTransition('tram1', 'tram2', () => showModal('question-pop'));
+        };
+        
         // --- STAGE 3: QUESTION & MEMORIES ---
         getEl('coa').onclick = () => {
             closeModal('question-pop');
@@ -681,16 +718,19 @@
         getEl('next4').onclick = () => fadeTransition('tram2', 'tram4', startEnergyDrain);
 
         // --- STAGE 4: ENERGY DRAIN & GAME ---
+        // SỬA LỖI: Chỉnh sửa hàm startEnergyDrain
         function startEnergyDrain() {
-            showModal('recharge-modal');
             document.querySelector('.dim-overlay').classList.add('dim');
+            showModal('recharge-modal');
         }
 
+        // SỬA LỖI: Chỉnh sửa sự kiện click của nút 'nap'
         getEl('nap').onclick = () => {
-            document.querySelector('.dim-overlay').classList.remove('dim');
-            closeModal('recharge-modal');
-            getEl('game-section').classList.remove('hidden');
-            initGame();
+            closeModal('recharge-modal', () => {
+                document.querySelector('.dim-overlay').classList.remove('dim');
+                getEl('game-section').classList.remove('hidden');
+                initGame();
+            });
         };
 
         // --- Game Logic ---
@@ -698,7 +738,7 @@
         
         function initGame() {
             game = getEl('game-canvas');
-            const ctx = game.getContext('2d');
+            ctx = game.getContext('2d');
             game.width = Math.min(window.innerWidth * 0.9, 500);
             game.height = 400;
 
@@ -764,7 +804,7 @@
             if (score >= 50) { // Win condition
                 ctx.clearRect(0, 0, game.width, game.height);
                 ctx.fillStyle = '#FF69B4';
-                ctx.font = '30px Arial';
+                ctx.font = 'bold 30px Pacifico';
                 ctx.textAlign = 'center';
                 ctx.fillText('Bạn đã thắng!', game.width / 2, game.height / 2);
                 getEl('open-gift').classList.remove('hidden');
