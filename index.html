@@ -1,62 +1,1072 @@
 <!DOCTYPE html>
-<html>
-    <!-- Phần đầu -->
-    <!--
-        1. h1 - h6 Heading
-        2. p - Paragraph
-        3. img - image
-        4. a - anchor (chèn link)
-        5. ul, li - unordered list, list item (ol - chuyển thành số)
-        6. table
-        7. input (nhập dữ liệu vào)
-        8. button
-        9. div (bao dữ liệu)
-        10. attribute (thêm thuộc tính vào các thẻ)
-    -->
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Món Quà Kỷ Niệm - Sinh Nhật Vui Vẻ</title>
+    <style>
+        /* Global Styles - Warm, friendly palette */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FFF5EE; /* Seashell warm background */
+            color: #4A4A4A;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 1s ease, filter 1s ease;
+        }
 
-    <!--
-        3 cách sử dụng css trong html:
-        1. External
-        2. Internal
-        3. Inline (attribute)
-        Chỉnh từng kí tự trong CSS:
-        ID & Class (ID:# Class: .)
-    -->
+        .hidden {
+            display: none !important;
+        }
 
-    <!--
-        Mức độ ưu tiên
-        Internal==External
-        Inline->id->class->tag (dùng style)
-        Equal specificity (Các cái cùng bậc thì ưu tiên cái viêt sau)
-        Universal selector and inherited (Dùng * để chỉnh cả file, !important để ưu tiên nhất)
-    -->
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
 
-    <!--
-        rem (phụ thuộc vào thẻ html) - responsive
-        %: phụ thuộc vào thẻ chứa nó
-        vw: phần trăm chiều ngang
-        vh: phần trăm chiều dọc
-    -->
-    <head>
-        <title>F8 - Shop</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="main.css">
-        <style>
-            .box {
-                width: 100%;
-                height: 100px;
-                background-color: red;
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.5s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        button {
+            background: #FF69B4; /* Hot pink */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #FF1493; /* Deep pink */
+            transform: translateY(-2px);
+        }
+
+        /* Heart Lock Styles - Improved with SVG for smoothness */
+        #lock-screen {
+            text-align: center;
+            width: 100%;
+        }
+
+        .heart-lock {
+            position: relative;
+            width: 200px;
+            height: 180px;
+            margin: 0 auto;
+        }
+
+        .heart {
+            fill: #FFC0CB; /* Pink */
+            stroke: #FF69B4;
+            stroke-width: 3;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .digits {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: space-around;
+            width: 160px;
+        }
+
+        .digit {
+            background: #FFFFFF;
+            border: 1px solid #FF69B4;
+            border-radius: 5px;
+            width: 20px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        #hint {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #FF69B4;
+            cursor: pointer;
+        }
+
+        /* Welcome Styles */
+        #welcome {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease;
+            width: 100%;
+        }
+
+        #welcome.show {
+            opacity: 1;
+        }
+
+        .grand {
+            font-size: 28px;
+            color: #FF69B4;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: grandEntrance 2s ease-in-out, rainbowText 5s infinite;
+        }
+
+        @keyframes grandEntrance {
+            0% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes rainbowText {
+            0% { color: #FF0000; }
+            14% { color: #FF7F00; }
+            28% { color: #FFFF00; }
+            42% { color: #00FF00; }
+            56% { color: #0000FF; }
+            70% { color: #4B0082; }
+            84% { color: #9400D3; }
+            100% { color: #FF0000; }
+        }
+
+        /* Fireworks - Optimized with less particles for smoothness */
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: explode 1s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        #energy-bar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 150px;
+            height: 10px;
+            background: #F0F0F0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .bar {
+            height: 100%;
+            background: linear-gradient(to right, #FF69B4, #FF1493);
+            transition: width 1s ease;
+        }
+
+        #avatar {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 50px;
+            background-image: url('images/avatar.jpg'); /* Thay bằng đường dẫn ảnh avatar bạn tải lên */
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        #avatar:hover {
+            transform: scale(1.1);
+        }
+
+        .arrow {
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            font-size: 24px;
+            color: #FF69B4;
+            animation: bounce 1s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Profile Popup */
+        #profile-pop .modal-content {
+            background: #FFEFD5;
+        }
+
+        /* Trạm 1 Styles */
+        #tram1 {
+            text-align: center;
+            width: 100%;
+            transition: opacity 0.5s ease;
+        }
+
+        .newspapers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .newspaper {
+            position: absolute;
+            width: 120px;
+            height: 80px;
+            background: #F5F5F5;
+            border: 1px solid #DDD;
+            border-radius: 5px;
+            transform: rotate(-10deg);
+            animation: flyIn 1.5s ease-in-out forwards;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        @keyframes flyIn {
+            0% { transform: translateX(-150%) rotate(-45deg); opacity: 0; }
+            100% { transform: translateX(0) rotate(0); opacity: 1; }
+        }
+
+        .comments {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .comment {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFC0CB;
+            padding: 8px 16px;
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            animation: riseUp 3s linear forwards;
+            display: flex;
+            align-items: center;
+        }
+
+        .comment span {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        @keyframes riseUp {
+            0% { bottom: -40px; opacity: 0; transform: translateX(-50%) scale(0.8); }
+            10% { opacity: 1; transform: translateX(-50%) scale(1); }
+            100% { bottom: 100%; opacity: 0; transform: translateX(-50%) scale(0.8); }
+        }
+
+        .like-count {
+            font-size: 24px;
+            color: #FF1493;
+            margin-top: 15px;
+        }
+
+        /* Trạm 2 Styles */
+        #question-pop button.big {
+            font-size: 20px;
+            padding: 12px 24px;
+        }
+
+        #hem {
+            transition: all 0.2s ease;
+        }
+
+        .memories {
+            position: relative;
+            height: 70vh;
+            width: 100%;
+        }
+
+        .cat {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+        }
+
+        .clouds {
+            position: relative;
+            height: 100%;
+        }
+
+        .cloud {
+            position: absolute;
+            width: 100px;
+            height: 60px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            opacity: 0.9;
+            cursor: pointer;
+            animation: float 8s infinite ease-in-out;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .cloud:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        #photo-viewer img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+        }
+
+        /* Trạm 4 Styles */
+        .dim-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 500;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .dim-overlay.dim {
+            opacity: 1;
+        }
+
+        #game {
+            border: 2px solid #FF69B4;
+            background: #FFE4E1;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 100%;
+            height: auto;
+        }
+
+        /* Phase 3 */
+        .copy {
+            color: #FF1493;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .chest {
+            width: 200px;
+            height: 160px;
+            background: linear-gradient(#DAA520, #FFD700);
+            margin: 15px auto;
+            border-radius: 10px;
+            position: relative;
+            animation: openChest 2s ease forwards;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        @keyframes openChest {
+            0% { transform: perspective(600px) rotateX(0deg); }
+            100% { transform: perspective(600px) rotateX(-60deg); }
+        }
+
+        .light-ray {
+            position: absolute;
+            top: -40px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #FFFF00, transparent);
+            opacity: 0.7;
+            animation: glow 1.5s infinite ease-in-out;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Assistant and Ticket Popups */
+        #assistant-pop, #ticket-pop, #hint-pop, #post-game-pop {
+            text-align: center;
+        }
+
+        #assistant-pop p, #ticket-pop p, #post-game-pop p {
+            font-size: 16px;
+            color: #4A4A4A;
+        }
+
+        /* Media Queries for Responsive */
+        @media (max-width: 600px) {
+            .modal-content {
+                padding: 15px;
+                max-width: 95%;
             }
 
-            h1{
-                font-size: 100px;
+            .heart-lock {
+                width: 150px;
+                height: 135px;
             }
-        </style>
-    </head>
-    <!-- Phần thân -->
-    <body>
-        <div class="box"></div>
-       <h1> CSS in HTML </h1>
-       <h2> CSS variable </h2>
-    </body>
+
+            .digits {
+                width: 120px;
+            }
+
+            .digit {
+                width: 15px;
+                height: 20px;
+                font-size: 12px;
+            }
+
+            .grand {
+                font-size: 20px;
+            }
+
+            #energy-bar {
+                width: 100px;
+                height: 8px;
+                top: 5px;
+                right: 5px;
+            }
+
+            #avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+                top: 5px;
+                left: 5px;
+            }
+
+            .arrow {
+                top: 45px;
+                left: 20px;
+                font-size: 20px;
+            }
+
+            .comments {
+                height: 200px;
+            }
+
+            .comment {
+                padding: 5px 10px;
+                font-size: 14px;
+            }
+
+            .cloud {
+                width: 80px;
+                height: 50px;
+            }
+
+            .cat {
+                font-size: 28px;
+            }
+
+            .chest {
+                width: 150px;
+                height: 120px;
+            }
+
+            .light-ray {
+                width: 60px;
+                height: 60px;
+                top: -30px;
+            }
+
+            /* Stack clouds vertically on small screens */
+            .clouds .cloud {
+                position: relative;
+                left: auto !important;
+                top: auto !important;
+                margin: 20px auto;
+            }
+
+            .memories {
+                height: auto;
+                padding: 50px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div id="lock-screen">
+        <div class="heart-lock">
+            <svg class="heart" width="100%" height="100%" viewBox="0 0 100 90">
+                <path d="M50 80L10 40C10 20 20 10 40 10C50 5 60 5 60 10C80 10 90 20 90 40L50 80Z" />
+            </svg>
+            <div class="digits">
+                <div class="digit" id="d1">0</div>
+                <div class="digit" id="d2">0</div>
+                <div class="digit" id="d3">0</div>
+                <div class="digit" id="d4">0</div>
+                <div class="digit" id="d5">0</div>
+                <div class="digit" id="d6">0</div>
+                <div class="digit" id="d7">0</div>
+                <div class="digit" id="d8">0</div>
+            </div>
+        </div>
+        <input type="text" id="password-input" style="opacity:0; position:absolute; width:1px; height:1px;" maxlength="8" autofocus>
+        <div id="hint" onclick="showModal('hint-pop')">Gợi ý</div>
+    </div>
+
+    <!-- Hint Modal (cải tiến từ div thành modal) -->
+    <div id="hint-pop" class="modal hidden">
+        <div class="modal-content">
+            <p>Nếu bạn chưa biết mật khẩu thì hãy xem lại thiệp nhó =))</p>
+            <button onclick="closeModal('hint-pop')">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Assistant Popup -->
+    <div id="assistant-pop" class="modal hidden">
+        <div class="modal-content">
+            <h2>Phần Quà Đầu Tiên: Trợ Thủ 🐟</h2>
+            <p>Đanh lê siu cấp cuti s1zt - Triệu hồi khi cần thiết! (Nếu triệu hồi sớm sẽ không hiệu nghiệm và hiện "trợ thủ đang bận òi")</p>
+            <button onclick="closeAssistant()">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Ticket Popup (thay src bằng file phiếu bé ngoan thật) -->
+    <div id="ticket-pop" class="modal hidden">
+        <div class="modal-content">
+            <h2>Phần Thưởng: Phiếu Bé Ngoan</h2>
+            <img src="phieu_be_ngoan.jpg" alt="Phiếu bé ngoan" style="width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật -->
+            <button onclick="closeTicket()">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div id="welcome" class="hidden">
+        <h1 class="grand">Đây là món quà do ducanhlesiucapcutis1zutru✨ dành tặng cho bạn 😇😇😇 sinh nhật zui zẻ nhé 🎉🎉🎉</h1>
+        <div class="fireworks"></div>
+        <div id="energy-bar"><div class="bar" style="width:100%;"></div></div>
+        <div id="avatar" onclick="showProfile()"></div> <!-- Nội dung text emoji đã được loại bỏ, ảnh sẽ dùng background-image -->
+        <div class="arrow hidden">← Ấn vào để xem hồ sơ của bạn</div>
+    </div>
+
+    <!-- Profile Popup -->
+    <div id="profile-pop" class="modal hidden">
+        <div class="modal-content">
+            <h2>Hồ Sơ Của Bạn</h2>
+            <p>Tên gem thủ: Nguyễn Đình Dương</p>
+            <p>Rank: Siucapgalangđepzai=))))</p>
+            <button id="next1">Ấn để xem tiếp</button>
+        </div>
+    </div>
+
+    <!-- Trạm 1 (thêm BTS lineup img nếu cần) -->
+    <div id="tram1" class="hidden">
+        <div id="notify-pop" class="modal-content" style="cursor:pointer;">Bạn có thông báo mới hãy ấn vào để xem</div>
+        <div id="announce" class="hidden grand">BTS thông báo ra mắt thành viên thứ 8</div>
+        <div class="newspapers hidden"></div>
+        <div id="main-tram1" class="hidden">
+            <!-- Thêm ảnh BTS lineup nếu cần -->
+            <img src="bts_lineup.png" alt="BTS Lineup" style="max-width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật -->
+            <!-- Music Player Placeholder -->
+            <audio controls>
+                <source src="music.mp3" type="audio/mpeg"> <!-- Thay bằng file nhạc thật -->
+            </audio>
+            <div class="comments"></div>
+            <div class="like-count">0 thả tim</div>
+        </div>
+        <button id="next2" class="hidden">Tiếp tục</button>
+    </div>
+
+    <!-- Trạm 2 -->
+    <div id="tram2" class="hidden">
+        <div id="question-pop" class="modal hidden">
+            <div class="modal-content">
+                <p>Trả lời câu hỏi để tiếp tục =))) : Bạn có thấy cảm động rớt nước mắt 😢😢😢 với món quà này ko</p>
+                <button id="coa" class="big">cóa</button>
+                <button id="hem">hem</button>
+            </div>
+        </div>
+        <div id="memories" class="hidden">
+            <div class="cat">🐱 our memories</div>
+            <div class="clouds">
+                <div class="cloud" style="left:10%; top:20%;" data-photo="hugging.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:30%; top:40%;" data-photo="classroom1.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:50%; top:30%;" data-photo="classroom2.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:70%; top:50%;" data-photo="walking.jpg"></div> <!-- Thay bằng ảnh thật -->
+            </div>
+        </div>
+        <div id="photo-viewer" class="modal hidden">
+            <div class="modal-content">
+                <img id="memory-photo" src="" alt="Kỷ Niệm">
+                <button onclick="closePhoto()">Đóng</button>
+            </div>
+        </div>
+        <div id="memories-pop" class="modal hidden">
+            <div class="modal-content">
+                <p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p>
+                <button onclick="closeMemoriesPop()">Đóng</button>
+            </div>
+        </div>
+        <button id="next4" class="hidden">Tiếp tục</button>
+    </div>
+
+    <!-- Trạm 4 -->
+    <div id="tram4" class="hidden">
+        <div class="dim-overlay"></div>
+        <div id="recharge-pop" class="modal-content">
+            <p>Màn hình đang tối lại... Energy low!</p>
+            <button id="nap">Nạp năng lượng</button>
+        </div>
+        <div id="game-section" class="hidden">
+            <p>Luật chơi: Di chuyển để ăn 🍦🍰 (5đ), 🎂 (10đ), tránh 💣 (-3đ). Score: <span id="score-display">0</span></p>
+            <canvas id="game"></canvas>
+            <button id="summon">Triệu hồi trợ thủ 🐟</button>
+        </div>
+        <button id="open-gift" class="hidden">MỞ QUÀ</button>
+    </div>
+
+    <!-- Post-Game Popup (thêm mới) -->
+    <div id="post-game-pop" class="modal hidden">
+        <div class="modal-content">
+            <p>Hồi đi học thấy m hay kêu mệt, h lại hay kêu bận, í là có j mệt quá có thể tìm ng tâm sự nè như t chẳng hạn =)))</p>
+            <button onclick="closePostGamePop()">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div id="phase3" class="hidden">
+        <div id="pass2" class="modal">
+            <div class="modal-content">
+                <p>Để xem tiếp bạn hãy nhập cú pháp: <span class="copy" onclick="copyCuphap()">toilanguyendinhduongtoixinhuasaunaysebaonuoiducanhlesiucapcutis1zutru✨</span> hehehe rồi gửi cho ducanhlesiucapcutis1zutru qua mess để nhận được mật khẩu</p>
+                <input id="passinput" type="text" placeholder="Nhập mật khẩu">
+                <button id="submitpass">Xác nhận</button>
+            </div>
+        </div>
+        <div id="treasure" class="hidden">
+            <div class="chest">
+                <div class="light-ray" style="left:10px;"></div>
+                <div class="light-ray" style="right:10px;"></div>
+            </div>
+            <h2>Phần thưởng 1: sẽ đc gửi cho bạn qua mess vào tối nay</h2>
+            <div class="reward2">
+                <img src="reminder_image.jpg" alt="Hình ảnh nhắc nhở" style="max-width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật (cat_cartoon hoặc tương tự) -->
+                <p>T nghĩ là lớp ko đi chs đc r nma m vx phải bao t đi ăng đó cấm đc bùng 😋😋😋</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const password = '22082007';
+        const digits = ['d1', 'd2', 'd3', 'd4', 'd5', 'd6', 'd7', 'd8'].map(id => document.getElementById(id));
+        let energy = 100;
+        let assistantUsed = false;
+        let firstCoa = true;
+        let noClicked = false;
+        let viewed = 0;
+        let gameWon = false;
+        let gamePhase = 0;
+        let protectedMode = false;
+
+        const commentData = [
+            {avatar: '🦁', text: 'Ngầu đét 😎😎😎'},
+            {avatar: '🐱', text: 'Ê đỉnh zữ v'},
+            {avatar: '🐯', text: 'Wow a này đzai thế'},
+            {avatar: '🐶', text: 'Anh ơi em quạt anh 🥰'},
+            {avatar: '🐵', text: 'Đzai quá a ơi '},
+            {avatar: '🦊', text: 'Anh này vô BTS là quá chuẩn r'},
+            {avatar: '🐷', text: 'Wow 🤩🤩🤩'},
+            {avatar: '🐰', text: 'ko ngo2f trên đời có ng đẹp z lun á 😊'},
+            {avatar: '🐻', text: 'Ngầu đét 😎😎😎'},
+            {avatar: '🐨', text: 'Ê đỉnh zữ v'},
+            {avatar: '🐼', text: 'Anh ơi em yêu anh ❤❤❤'} // Special last
+        ];
+
+        // Password input logic
+        const passInput = document.getElementById('password-input');
+        passInput.focus();
+        passInput.oninput = (e) => {
+            const val = e.target.value;
+            digits.forEach((d, i) => d.textContent = val[i - 1] || '0'); // Fix index (val[0] for d1)
+            if (val === password) {
+                document.getElementById('lock-screen').classList.add('hidden');
+                showModal('assistant-pop');
+            }
+        };
+
+        function showModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('show');
+            setTimeout(() => modal.classList.add('hidden'), 500);
+        }
+
+        function closeAssistant() {
+            closeModal('assistant-pop');
+            showModal('ticket-pop');
+        }
+
+        function closeTicket() {
+            closeModal('ticket-pop');
+            document.getElementById('welcome').classList.remove('hidden');
+            setTimeout(() => document.getElementById('welcome').classList.add('show'), 10);
+            launchFireworks(20); // Giảm số lượng cho mượt
+            setTimeout(() => document.querySelector('.arrow').classList.remove('hidden'), 2000);
+        }
+
+        // Fireworks (optimized)
+        function launchFireworks(count) {
+            const fireworks = document.querySelector('.fireworks');
+            for (let i = 0; i < count; i++) {
+                const fw = document.createElement('div');
+                fw.classList.add('firework');
+                fw.style.left = `${Math.random() * 100}%`;
+                fw.style.top = `${Math.random() * 100}%`;
+                fw.style.background = `radial-gradient(circle, hsl(${Math.random()*360}, 100%, 50%), transparent)`;
+                fireworks.appendChild(fw);
+                setTimeout(() => fw.remove(), 1000);
+            }
+        }
+
+        function showProfile() {
+            showModal('profile-pop');
+        }
+
+        document.getElementById('next1').onclick = () => {
+            closeModal('profile-pop');
+            fadeTransition('welcome', 'tram1');
+            energy -= 20;
+            updateEnergy();
+        };
+
+        // Thêm transition fade giữa trạm
+        function fadeTransition(hideId, showId) {
+            const hideEl = document.getElementById(hideId);
+            const showEl = document.getElementById(showId);
+            hideEl.style.opacity = 0;
+            setTimeout(() => {
+                hideEl.classList.add('hidden');
+                showEl.classList.remove('hidden');
+                setTimeout(() => showEl.style.opacity = 1, 10);
+            }, 500);
+        }
+
+        function showNewspapers() {
+            document.querySelector('.newspapers').classList.remove('hidden');
+            for (let i = 0; i < 6; i++) {
+                const np = document.createElement('div');
+                np.classList.add('newspaper');
+                np.style.left = `${Math.random() * 100}%`;
+                np.style.top = `${Math.random() * 100}%`;
+                np.style.animationDelay = `${i * 0.2}s`;
+                np.innerText = 'Báo chí: Thành viên mới BTS!';
+                document.querySelector('.newspapers').appendChild(np);
+                setTimeout(() => np.remove(), 2000);
+            }
+            setTimeout(() => {
+                document.getElementById('main-tram1').classList.remove('hidden');
+                startComments();
+                animateLikes();
+                document.getElementById('next2').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function startComments() {
+            commentData.forEach((c, i) => {
+                setTimeout(() => {
+                    const com = document.createElement('div');
+                    com.classList.add('comment');
+                    com.style.left = `${Math.random() * 80 + 10}%`;
+                    com.innerHTML = `<span>${c.avatar}</span>${c.text}`;
+                    document.querySelector('.comments').appendChild(com);
+                    createHearts(com); // Thêm hearts bay
+                    setTimeout(() => com.remove(), 3000); // Giảm thời gian cho mượt
+                }, i * 600);
+            });
+        }
+
+        function createHearts(parent) {
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('span');
+                heart.textContent = '❤';
+                heart.style.position = 'absolute';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = '0';
+                heart.style.color = 'red';
+                heart.style.animation = 'riseUp 2s linear forwards';
+                parent.appendChild(heart);
+                setTimeout(() => heart.remove(), 2000);
+            }
+        }
+
+        function animateLikes() {
+            let count = 0;
+            const likeEl = document.querySelector('.like-count');
+            const interval = setInterval(() => {
+                count += 500;
+                likeEl.textContent = `${(count / 1000).toFixed(2)}k thả tim`;
+                if (count >= 22080) clearInterval(interval);
+            }, 50);
+        }
+
+        document.getElementById('next2').onclick = () => {
+            fadeTransition('tram1', 'tram2');
+            showModal('question-pop');
+            energy -= 20;
+            updateEnergy();
+        };
+
+        document.getElementById('coa').onclick = () => {
+            if (firstCoa) {
+                alert('weo chọn cóa lun hẻ, trời oie đáng iu z 😍😍😍');
+            } else {
+                alert('ê dỗi nka trời làm vậy rồi mà không cảm động');
+            }
+            closeModal('question-pop');
+            document.getElementById('memories').classList.remove('hidden');
+            initClouds();
+            firstCoa = false;
+        };
+
+        document.getElementById('hem').onclick = () => {
+            noClicked = true;
+            const hem = document.getElementById('hem');
+            hem.style.position = 'absolute';
+            hem.style.left = `${Math.random() * (window.innerWidth - 100)}px`;
+            hem.style.top = `${Math.random() * (window.innerHeight - 50)}px`;
+        };
+
+        window.addEventListener('beforeunload', (e) => {
+            if (!document.getElementById('question-pop').classList.contains('hidden')) {
+                e.preventDefault();
+                alert('nếu bạn thoát khỏi web ngay lúc này thì có nghĩa là bạn đang cảm động rớt nước mắt =)))');
+            }
+        });
+
+        function initClouds() {
+            const clouds = document.querySelectorAll('.cloud');
+            clouds.forEach((cloud, i) => {
+                cloud.style.animationDelay = `${i * 2}s`;
+                cloud.onclick = () => {
+                    document.getElementById('memory-photo').src = cloud.dataset.photo;
+                    showModal('photo-viewer');
+                    viewed++;
+                    if (viewed === clouds.length) {
+                        showModal('memories-pop');
+                        document.getElementById('next4').classList.remove('hidden');
+                    }
+                };
+            });
+        }
+
+        function closePhoto() {
+            closeModal('photo-viewer');
+        }
+
+        function closeMemoriesPop() {
+            closeModal('memories-pop');
+        }
+
+        document.getElementById('next4').onclick = () => {
+            fadeTransition('tram2', 'tram4');
+            energy -= 20;
+            updateEnergy();
+            const bar = document.querySelector('.bar');
+            bar.style.background = 'red';
+            bar.style.animation = 'blink 1s infinite';
+        };
+
+        document.getElementById('nap').onclick = () => {
+            document.getElementById('recharge-pop').style.display = 'none';
+            document.getElementById('game-section').classList.remove('hidden');
+            startGame();
+        };
+
+        function startGame() {
+            const canvas = document.getElementById('game');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth * 0.9; // Responsive width
+            canvas.height = canvas.width * 2 / 3; // Giữ ratio
+            let playerX = canvas.width / 2;
+            let score = 0;
+            let items = [];
+            gamePhase = 0;
+            protectedMode = false;
+            const scoreDisplay = document.getElementById('score-display');
+
+            // Touch controls for mobile
+            let touchStartX = 0;
+            canvas.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+            canvas.addEventListener('touchmove', e => {
+                const delta = e.touches[0].clientX - touchStartX;
+                playerX += delta / 5; // Sensitivity
+                playerX = Math.max(20, Math.min(canvas.width - 20, playerX));
+                touchStartX = e.touches[0].clientX;
+            });
+
+            function createItem() {
+                const types = gamePhase === 0 ? ['🍦', '🍰', '🎂', '💣'] : ['💣'];
+                const type = types[Math.floor(Math.random() * types.length)]; // Fix duplicate
+                const points = type === '🍦' || type === '🍰' ? 5 : type === '🎂' ? 10 : -3;
+                items.push({x: Math.random() * (canvas.width - 20), y: 0, type, points});
+            }
+
+            setInterval(createItem, 400);
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'ArrowLeft') playerX = Math.max(20, playerX - 20);
+                if (e.key === 'ArrowRight') playerX = Math.min(canvas.width - 20, playerX + 20);
+            });
+
+            document.getElementById('summon').onclick = () => {
+                if (assistantUsed) return alert('Trợ thủ đã sử dụng!');
+                if (gamePhase === 0) return alert('trợ thủ đang bận òi');
+                protectedMode = true;
+                assistantUsed = true;
+                setTimeout(() => protectedMode = false, 5000);
+            };
+
+            function updateGame() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#4A4A4A';
+                ctx.fillRect(playerX - 20, canvas.height - 40, 40, 40); // Player at bottom
+
+                for (let i = items.length - 1; i >= 0; i--) { // Loop backward for safe splice
+                    const item = items[i];
+                    item.y += 3;
+                    ctx.font = '24px Arial';
+                    ctx.fillText(item.type, item.x, item.y);
+                    if (item.y > canvas.height) {
+                        items.splice(i, 1);
+                        continue;
+                    }
+
+                    if (Math.abs(item.x - playerX) < 30 && item.y > canvas.height - 60 && item.y < canvas.height - 20) {
+                        if (item.points < 0 && protectedMode) {
+                            score += 5;
+                        } else {
+                            score += item.points;
+                        }
+                        items.splice(i, 1);
+                    }
+                }
+
+                scoreDisplay.textContent = score;
+                if (score >= 100 || (gamePhase === 1 && protectedMode)) {
+                    gameWon = true;
+                    document.getElementById('open-gift').classList.remove('hidden');
+                    document.querySelector('.dim-overlay').classList.remove('dim');
+                    const bar = document.querySelector('.bar');
+                    bar.style.background = 'linear-gradient(to right, #FF69B4, #FF1493)';
+                    bar.style.animation = 'none';
+                    energy = 100; // Hồi energy sau sạc
+                    updateEnergy();
+                    showModal('post-game-pop'); // Hiện pop-up sau khi thắng game
+                } else if (score < 0) {
+                    alert('Bạn cần trợ thủ để vượt qua!');
+                    score = 0;
+                }
+
+                requestAnimationFrame(updateGame);
+            }
+
+            updateGame();
+            setTimeout(() => gamePhase = 1, 8000);
+        }
+
+        function closePostGamePop() {
+            closeModal('post-game-pop');
+        }
+
+        document.getElementById('open-gift').onclick = () => {
+            if (!gameWon) return;
+            fadeTransition('tram4', 'phase3');
+            showModal('pass2');
+        };
+
+        function copyCuphap() {
+            navigator.clipboard.writeText('toilanguyendinhduongtoixinhuasaunaysebaonuoiducanhlesiucapcutis1zutru✨');
+            alert('Đã copy!');
+        }
+
+        document.getElementById('submitpass').onclick = () => {
+            if (document.getElementById('passinput').value === 'oke =))') {
+                closeModal('pass2');
+                document.getElementById('treasure').classList.remove('hidden');
+                launchFireworks(30);
+            } else {
+                alert('Sai mật khẩu!');
+            }
+        };
+
+        function updateEnergy() {
+            document.querySelector('.bar').style.width = `${energy}%`;
+        }
+
+        // Init notify-pop onclick in Trạm 1
+        document.getElementById('notify-pop').onclick = () => {
+            document.getElementById('notify-pop').style.display = 'none';
+            document.getElementById('announce').classList.remove('hidden');
+            setTimeout(showNewspapers, 1000);
+        };
+
+        document.getElementById('next2').onclick = () => {
+            fadeTransition('tram1', 'tram2');
+            showModal('question-pop');
+            energy -= 20;
+            updateEnergy();
+        };
+    </script>
+</body>
 </html>
