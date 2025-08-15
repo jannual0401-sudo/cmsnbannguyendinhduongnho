@@ -78,20 +78,27 @@
         .newspapers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10; }
         .newspaper { position: absolute; width: 60%; min-width: 200px; background: #fdf5e6; border: 1px solid #ccc; padding: 8px; font-family: 'Times New Roman', Times, serif; box-shadow: 3px 3px 10px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
         .newspaper.style-2 { background: #e6f7ff; border-color: #91d5ff; }
-        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(-150vw) rotateY(60deg) scale(0.7); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-pos)) translateY(var(--y-pos)) rotateY(0deg) rotateZ(var(--rotation)) scale(1); } }
+        .newspaper.style-3 { background: #f0fff0; border-color: #a9d18e; }
+        .newspaper.style-4 { background: #faedcd; border-color: #e3b505; }
+        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(var(--x-start)) translateY(var(--y-start)) rotateY(60deg) scale(0.7); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-end)) translateY(var(--y-end)) rotateY(0deg) rotateZ(var(--rotation)) scale(1); } }
         #newspaper-wall { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--background-color); z-index: 998; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         #newspaper-wall h2 { color: var(--primary-color); font-family: 'Pacifico', cursive; }
-        #main-tram1-content { position: relative; } /* Container cho ảnh và comment */
+        #main-tram1-content { position: relative; overflow: hidden; border-radius: 10px; } /* Container cho ảnh và comment */
         #comment-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         .fan-comment {
             position: absolute; background: rgba(0, 0, 0, 0.6); color: white; padding: 5px 10px; border-radius: 15px; display: flex; align-items: center; gap: 8px;
-            font-size: 0.8em; animation: comment-fade-in-scale 0.7s ease-out forwards;
-            opacity: 0; transform: scale(0.5);
+            font-size: 0.8em; animation: comment-float 4s linear forwards;
+            opacity: 0; white-space: nowrap;
         }
-        @keyframes comment-fade-in-scale { to { opacity: 1; transform: scale(1); } }
+        @keyframes comment-float {
+            0% { opacity: 0; transform: translateY(110%); }
+            10%, 20% { opacity: 1; }
+            90% { opacity: 1; transform: translateY(-10%); }
+            100% { opacity: 0; transform: translateY(-20%); }
+        }
         .fan-comment .avatar { font-size: 1.2em; }
-        #main-tram1 img { max-width: 100%; border-radius: 10px; margin-bottom: 10px; display: block; }
-        #music-player { width: 100%; }
+        #main-tram1 img { max-width: 100%; display: block; }
+        #music-player { width: 100%; margin-top: 10px;}
         .like-container { margin-top: 10px; font-size: 1em; font-weight: bold; position: relative; min-height: 50px; }
         #like-count { color: var(--primary-color); font-size: 1.2em; }
         .flying-heart { position: absolute; bottom: 0; left: 50%; font-size: 18px; pointer-events: none; animation: floatHeart 1.5s ease-out forwards; }
@@ -134,6 +141,8 @@
         #notify-continue-pop .modal-content { font-size: 1em; }
         #notify-continue-pop .modal-content button { margin-top: 10px; }
         #profile-pop img.profile-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 15px auto; border: 3px solid var(--primary-color); }
+        #end-gift-pop .modal-content { font-size: 1.2em; }
+        #end-gift-pop .modal-content h2 { font-size: 1.5em; color: var(--primary-color); margin-bottom: 10px; }
         @media (min-width: 769px) {
             body { padding: 0; }
             .heart-lock { width: 500px; height: 450px; margin: 0 auto; }
@@ -295,7 +304,12 @@
         <h3>Góc nhắc nhở nhẹ 📝</h3>
         <img src="https://i.imgur.com/eBf2g6v.png" alt="Góc nhắc nhở" style="max-width:90%; border-radius:10px;">
         <p style="font-size: 1.1em; font-weight: 500; margin-top: 10px;">T nghĩ là lớp ko đi chs đc r nma m vx phải bao t đi ăng đó cấm đc bùng 😋😋😋</p>
-        <button style="margin-top: 15px;" onclick="closeModal('reminder-pop')">Okie la</button>
+        <button style="margin-top: 15px;" onclick="closeModal('reminder-pop', () => showModal('end-gift-pop'))">Okie la</button>
+    </div></div>
+    <div id="end-gift-pop" class="modal"><div class="modal-content">
+        <h2>Vậy là hết quà òi</h2>
+        <p>Chúc bạn sinh nhật zui zẻ nhé 🎉🎉🎉</p>
+        <button onclick="closeModal('end-gift-pop')">Cảm ơn nha</button>
     </div></div>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
@@ -374,13 +388,31 @@
         function showNewspapers() {
             const newspapersContainer = document.querySelector('.newspapers');
             newspapersContainer.classList.remove('hidden');
+            const titles = [
+                'CHẤN ĐỘNG: THÀNH VIÊN MỚI LỘ DIỆN!',
+                'HOT NEWS: AI LÀ MẢNH GHÉP THỨ 8?',
+                'BREAKING: BTS SẮP CÓ ĐỘI HÌNH MỚI?',
+                'ĐỘC QUYỀN: HÌNH ẢNH ĐẦU TIÊN CỦA "TÂN BINH"!',
+                'ARMY DẬY SÓNG VÌ THÀNH VIÊN BÍ ẨN!'
+            ];
+            
             for (let i = 0; i < 15; i++) {
                 const np = document.createElement('div');
-                np.className = `newspaper ${Math.random() > 0.6 ? 'style-2' : ''}`;
-                np.style.setProperty('--x-pos', `${Math.random() * 80 - 40}vw`);
-                np.style.setProperty('--y-pos', `${Math.random() * 60 - 30}vh`);
+                const styleClass = `style-${Math.floor(Math.random() * 3) + 2}`; // style-2, style-3, style-4
+                np.className = `newspaper ${styleClass}`;
+
+                const isDiagonal = i < 10; // 10 tờ đầu bay chéo
+                const startX = isDiagonal ? (Math.random() > 0.5 ? -150 : 150) : -150;
+                const startY = isDiagonal ? `${Math.random() * 100 - 50}vh` : `${Math.random() * 40 - 20}vh`;
+                const endX = `${Math.random() * 80 - 40}vw`;
+                const endY = `${Math.random() * 60 - 30}vh`;
+
+                np.style.setProperty('--x-start', startX + 'vw');
+                np.style.setProperty('--y-start', startY);
+                np.style.setProperty('--x-end', endX);
+                np.style.setProperty('--y-end', endY);
                 np.style.setProperty('--rotation', `${Math.random() * 40 - 20}deg`);
-                np.innerHTML = `<h3>HOT NEWS!</h3><p>BTS RA MẮT THÀNH VIÊN THỨ 8!</p>`;
+                np.innerHTML = `<h3>${titles[i % titles.length]}</h3><p>BTS RA MẮT THÀNH VIÊN THỨ 8!</p>`;
                 newspapersContainer.appendChild(np);
             }
             setTimeout(() => {
@@ -409,30 +441,37 @@
             ];
             const specialComment = { a: '🐱', c: 'Anh ơi em yêu anh ❤❤❤' };
             
-            comments.sort(() => Math.random() - 0.5); // Xáo trộn comment
-            
-            let delay = 1000;
-            comments.forEach(comment => {
-                setTimeout(() => {
+            comments.push(specialComment);
+            comments.sort(() => Math.random() - 0.5); // Xáo trộn tất cả comment
+
+            let usedLanes = [];
+            const createComment = (comment, delay) => {
+                 setTimeout(() => {
                     const commentEl = document.createElement('div');
                     commentEl.className = 'fan-comment';
-                    commentEl.style.top = `${10 + Math.random() * 70}%`;
-                    commentEl.style.left = `${5 + Math.random() * 50}%`;
-                    commentEl.innerHTML = `<span class="avatar">${comment.a}</span><p>${comment.c}</p>`;
+                    
+                    let lane;
+                    do {
+                        lane = Math.floor(Math.random() * 4); // 4 lanes
+                    } while (usedLanes.includes(lane));
+                    
+                    usedLanes.push(lane);
+                    if (usedLanes.length > 2) {
+                        usedLanes.shift(); // Keep track of recent lanes to avoid overlap
+                    }
+
+                    commentEl.style.left = `${5 + lane * 22}%`;
+                    commentEl.innerHTML = `<span class="avatar">${comment.a}</span><span>${comment.c}</span>`;
                     overlay.appendChild(commentEl);
+                    setTimeout(() => commentEl.remove(), 4000); // Remove after animation
                 }, delay);
-                delay += Math.random() * 1000 + 500;
-            });
+            }
             
-            setTimeout(() => {
-                const specialEl = document.createElement('div');
-                specialEl.className = 'fan-comment';
-                specialEl.style.top = `80%`;
-                specialEl.style.left = `25%`;
-                specialEl.style.background = 'var(--primary-color)';
-                specialEl.innerHTML = `<span class="avatar">${specialComment.a}</span><p>${specialComment.c}</p>`;
-                overlay.appendChild(specialEl);
-            }, delay + 1000);
+            let initialDelay = 500;
+            comments.forEach(c => {
+                createComment(c, initialDelay);
+                initialDelay += Math.random() * 1000 + 500;
+            });
         }
 
         function animateLikes(target) {
