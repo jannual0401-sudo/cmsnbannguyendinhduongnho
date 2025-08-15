@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Món Quà Kỷ Niệm - Sinh Nhật Vui Vẻ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* Global Styles - Warm, friendly palette */
         body {
@@ -82,8 +83,8 @@
 
         .heart-lock {
             position: relative;
-            width: 300px;
-            height: 270px;
+            width: 400px;
+            height: 360px;
             margin: 0 auto;
         }
 
@@ -106,7 +107,7 @@
             transform: translate(-50%, -50%);
             display: flex;
             justify-content: space-around;
-            width: 240px;
+            width: 320px;
         }
 
         .digit-container {
@@ -163,26 +164,16 @@
         }
 
         .grand {
-            font-size: 28px;
+            font-size: 36px;
+            font-family: 'Pacifico', cursive;
             color: #FF69B4;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            animation: grandEntrance 2s ease-in-out, rainbowText 5s infinite;
+            animation: grandEntrance 2s ease-in-out;
         }
 
         @keyframes grandEntrance {
-            0% { opacity: 0; transform: translateY(-50px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes rainbowText {
-            0% { color: #FF0000; }
-            14% { color: #FF7F00; }
-            28% { color: #FFFF00; }
-            42% { color: #00FF00; }
-            56% { color: #0000FF; }
-            70% { color: #4B0082; }
-            84% { color: #9400D3; }
-            100% { color: #FF0000; }
+            0% { opacity: 0; transform: translateY(-50px) scale(0.5); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* Fireworks - Optimized with less particles for smoothness */
@@ -283,14 +274,28 @@
 
         .newspaper {
             position: absolute;
-            width: 120px;
-            height: 80px;
+            width: 180px;
+            height: 120px;
             background: #F5F5F5;
-            border: 1px solid #DDD;
-            border-radius: 5px;
+            border: 1px solid #000;
+            border-radius: 0;
+            padding: 10px;
+            font-family: serif;
             transform: rotate(-10deg);
             animation: flyIn 1.5s ease-in-out forwards;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .newspaper h3 {
+            border-bottom: 2px solid #000;
+            margin: 0;
+            padding-bottom: 5px;
+        }
+
+        .newspaper p {
+            margin: 5px 0;
+            font-style: italic;
         }
 
         @keyframes flyIn {
@@ -333,6 +338,19 @@
             font-size: 24px;
             color: #FF1493;
             margin-top: 15px;
+            position: relative;
+        }
+
+        .flying-heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            animation: floatHeart 2s linear forwards;
+        }
+
+        @keyframes floatHeart {
+            0% { opacity: 1; transform: translateY(0) translateX(0); }
+            100% { opacity: 0; transform: translateY(-100px) translateX(calc(50px - 100px * var(--rand))); }
         }
 
         /* Trạm 2 Styles */
@@ -366,15 +384,37 @@
 
         .cloud {
             position: absolute;
-            width: 100px;
+            width: 200px;
             height: 60px;
             background: #FFFFFF;
-            border-radius: 50%;
+            border-radius: 200px / 60px;
             opacity: 0.9;
             cursor: pointer;
             animation: float 8s infinite ease-in-out;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
+        }
+
+        .cloud::before {
+            content: '';
+            position: absolute;
+            background: #FFFFFF;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            top: -60px;
+            right: 10px;
+        }
+
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: #FFFFFF;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            top: -40px;
+            left: 50px;
         }
 
         .cloud:hover {
@@ -476,12 +516,12 @@
             }
 
             .heart-lock {
-                width: 250px;
-                height: 225px;
+                width: 300px;
+                height: 270px;
             }
 
             .digits {
-                width: 200px;
+                width: 240px;
             }
 
             .digit {
@@ -491,7 +531,7 @@
             }
 
             .grand {
-                font-size: 20px;
+                font-size: 28px;
             }
 
             #energy-bar {
@@ -525,8 +565,23 @@
             }
 
             .cloud {
-                width: 80px;
+                width: 150px;
                 height: 50px;
+                border-radius: 150px / 50px;
+            }
+
+            .cloud::before {
+                width: 90px;
+                height: 90px;
+                top: -45px;
+                right: 10px;
+            }
+
+            .cloud::after {
+                width: 60px;
+                height: 60px;
+                top: -30px;
+                left: 40px;
             }
 
             .cat {
@@ -633,7 +688,7 @@
     <div id="ticket-pop" class="modal hidden">
         <div class="modal-content">
             <h2>Phần Thưởng: Phiếu Bé Ngoan</h2>
-            <img src="phieu_be_ngoan.jpg" alt="Phiếu bé ngoan" style="width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật -->
+            <img src="images/phieu_be_ngoan.jpg" alt="Phiếu bé ngoan" style="width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật -->
             <button onclick="closeTicket()">Đóng</button>
         </div>
     </div>
@@ -664,7 +719,7 @@
         <div class="newspapers hidden"></div>
         <div id="main-tram1" class="hidden">
             <!-- Thêm ảnh BTS lineup nếu cần -->
-            <img src="bts_lineup.png" alt="BTS Lineup" style="max-width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật -->
+            <img src="images/bts_lineup.png" alt="BTS Lineup" style="max-width:100%; border-radius:10px;"> <!-- Thay bằng ảnh thật -->
             <!-- Music Player Placeholder -->
             <audio controls>
                 <source src="music.mp3" type="audio/mpeg"> <!-- Thay bằng file nhạc thật -->
@@ -687,10 +742,10 @@
         <div id="memories" class="hidden">
             <div class="cat">🐱 our memories</div>
             <div class="clouds">
-                <div class="cloud" style="left:10%; top:20%;" data-photo="hugging.jpg"></div> <!-- Thay bằng ảnh thật -->
-                <div class="cloud" style="left:30%; top:40%;" data-photo="classroom1.jpg"></div> <!-- Thay bằng ảnh thật -->
-                <div class="cloud" style="left:50%; top:30%;" data-photo="classroom2.jpg"></div> <!-- Thay bằng ảnh thật -->
-                <div class="cloud" style="left:70%; top:50%;" data-photo="walking.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:15%; top:10%;" data-photo="images/hugging.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:35%; top:30%;" data-photo="images/classroom1.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:55%; top:15%;" data-photo="images/classroom2.jpg"></div> <!-- Thay bằng ảnh thật -->
+                <div class="cloud" style="left:75%; top:35%;" data-photo="images/walking.jpg"></div> <!-- Thay bằng ảnh thật -->
             </div>
         </div>
         <div id="photo-viewer" class="modal hidden">
@@ -813,7 +868,8 @@
             closeModal('ticket-pop');
             document.getElementById('welcome').classList.remove('hidden');
             setTimeout(() => document.getElementById('welcome').classList.add('show'), 10);
-            launchFireworks(20); // Giảm số lượng cho mượt
+            launchFireworks(50);
+            setTimeout(() => launchFireworks(50), 1000);
             setTimeout(() => document.querySelector('.arrow').classList.remove('hidden'), 2000);
         }
 
@@ -862,7 +918,7 @@
                 np.style.left = `${Math.random() * 100}%`;
                 np.style.top = `${Math.random() * 100}%`;
                 np.style.animationDelay = `${i * 0.2}s`;
-                np.innerText = 'Báo chí: Thành viên mới BTS!';
+                np.innerHTML = '<h3>BTS RA MẮT THÀNH VIÊN THỨ 8</h3><p>Đó là ai?</p><p>Đó là ai?</p>';
                 document.querySelector('.newspapers').appendChild(np);
                 setTimeout(() => np.remove(), 2000);
             }
@@ -903,13 +959,23 @@
         }
 
         function animateLikes() {
-            let count = 0;
             const likeEl = document.querySelector('.like-count');
-            const interval = setInterval(() => {
-                count += 500;
-                likeEl.textContent = `${(count / 1000).toFixed(2)}k thả tim`;
-                if (count >= 22080) clearInterval(interval);
-            }, 50);
+            likeEl.textContent = '22.08k thả tim';
+            createFlyingHearts(likeEl);
+        }
+
+        function createFlyingHearts(parent) {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('span');
+                    heart.classList.add('flying-heart');
+                    heart.textContent = '❤';
+                    heart.style.left = '50%';
+                    heart.style.--rand = Math.random();
+                    parent.appendChild(heart);
+                    setTimeout(() => heart.remove(), 2000);
+                }, i * 100);
+            }
         }
 
         document.getElementById('next2').onclick = () => {
@@ -977,6 +1043,7 @@
             const bar = document.querySelector('.bar');
             bar.style.background = 'red';
             bar.style.animation = 'blink 1s infinite';
+            setTimeout(() => document.querySelector('.dim-overlay').classList.add('dim'), 1000);
         };
 
         document.getElementById('nap').onclick = () => {
@@ -1074,7 +1141,7 @@
             }
 
             updateGame();
-            setTimeout(() => gamePhase = 1, 8000);
+            setTimeout(() => gamePhase = 1, 5000); // Reduce timeout to 5s
         }
 
         function closePostGamePop() {
