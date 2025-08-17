@@ -76,25 +76,41 @@
         #announce-container { margin-bottom: 15px; }
         #announce { font-size: 1.8em; font-family: 'Pacifico', cursive; color: var(--primary-color); }
         .newspapers { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 10; }
-        .newspaper { position: absolute; width: 60%; min-width: 200px; background: #fdf5e6; border: 1px solid #ccc; padding: 8px; font-family: 'Times New Roman', Times, serif; box-shadow: 3px 3px 10px rgba(0,0,0,0.2); animation: flyIn3D 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-        .newspaper.style-2 { background: #e6f7ff; border-color: #91d5ff; }
-        .newspaper.style-3 { background: #f0fff0; border-color: #a9d18e; }
-        .newspaper.style-4 { background: #faedcd; border-color: #e3b505; }
-        @keyframes flyIn3D { from { opacity: 0; transform: perspective(800px) translateX(var(--x-start)) translateY(var(--y-start)) rotateY(60deg) scale(0.7); } to { opacity: 1; transform: perspective(800px) translateX(var(--x-end)) translateY(var(--y-end)) rotateY(0deg) rotateZ(var(--rotation)) scale(1); } }
+        .newspaper { 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            max-width: 350px;
+            background: #fdf5e6; 
+            border: 1px solid #ccc; 
+            padding: 8px; 
+            font-family: 'Times New Roman', Times, serif; 
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2); 
+            animation: fadeInOutCenter 3s ease-in-out forwards;
+        }
+        @keyframes fadeInOutCenter {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
         #newspaper-wall { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--background-color); z-index: 998; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         #newspaper-wall h2 { color: var(--primary-color); font-family: 'Pacifico', cursive; }
-        #main-tram1-content { position: relative; overflow: hidden; border-radius: 10px; } /* Container cho ảnh và comment */
+        #main-tram1-content { position: relative; overflow: hidden; border-radius: 10px; }
         #comment-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
         .fan-comment {
-            position: absolute; background: rgba(0, 0, 0, 0.6); color: white; padding: 5px 10px; border-radius: 15px; display: flex; align-items: center; gap: 8px;
-            font-size: 0.8em; animation: comment-float 4s linear forwards;
+            position: absolute; background: rgba(0, 0, 0, 0.7); color: white; padding: 5px 10px; border-radius: 15px; display: flex; align-items: center; gap: 8px;
+            font-size: 0.8em;
             opacity: 0; white-space: nowrap;
+            animation: comment-appear-stay-fade 7s linear forwards;
+            transform-origin: center;
         }
-        @keyframes comment-float {
-            0% { opacity: 0; transform: translateY(110%); }
-            10%, 20% { opacity: 1; }
-            90% { opacity: 1; transform: translateY(-10%); }
-            100% { opacity: 0; transform: translateY(-20%); }
+        @keyframes comment-appear-stay-fade {
+            0% { opacity: 0; transform: scale(0.7); }
+            15% { opacity: 1; transform: scale(1); }
+            85% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.7); }
         }
         .fan-comment .avatar { font-size: 1.2em; }
         #main-tram1 img { max-width: 100%; display: block; }
@@ -158,7 +174,7 @@
             .arrow-hint { top: 5px; left: 60px; padding: 5px 10px; border-radius: 10px; font-size: 1em; }
             #tram1 { max-width: 600px; }
             #announce { font-size: 2.5em; }
-            .newspaper { width: 250px; padding: 10px; }
+            .newspaper { width: 400px; padding: 10px; }
             #main-tram1 img { margin-bottom: 15px; }
             .like-container { font-size: 1.2em; }
             #like-count { font-size: 1.5em; }
@@ -285,7 +301,7 @@
         <p style="font-size: 1.5em; font-family: 'Pacifico', cursive; color: var(--primary-color);">weo chọn cóa lun hẻ, trời oie đáng iu z 😍😍😍</p>
         <button id="continue-to-tram2">Hihi ngại quá</button>
     </div></div>
-    <div id="photo-viewer" class="modal"><div class="modal-content"><img id="memory-photo" src="" style="max-width:95%; border-radius: 8px;"><button style="margin-top: 10px;" onclick="closeModal('photo-viewer')">Đóng</button></div></div>
+    <div id="photo-viewer" class="modal"><div class="modal-content"><img id="memory-photo" src="" style="max-width:95%; border-radius: 8px;"><button style="margin-top: 10px;" onclick="handlePhotoViewerClose()">Đóng</button></div></div>
     <div id="memories-pop" class="modal"><div class="modal-content"><p>t ít ảnh chụp chung vs m vl tìm mãi ms tìm đc ó, nên biết trân trọng t ik =))</p><button onclick="closeModal('memories-pop', () => showModal('notify-continue-pop'))">Okieee</button></div></div>
     <div id="recharge-pop" class="modal"><div class="modal-content"><p>Năng lượng sắp cạn kiệt!</p><button id="nap">Nạp năng lượng</button></div></div>
     <div id="game-rules-pop" class="modal"><div class="modal-content"><h2>Luật Chơi</h2><p>Di chuyển chuột hoặc ngón tay để điều khiển 😇.</p><p>Ăn 🍦🍰 (+5đ), 🎂 (+10đ).</p><p>Tránh 💣 (-3đ)!</p><button onclick="closeModal('game-rules-pop', initGame)">Bắt đầu!</button></div></div>
@@ -316,7 +332,7 @@
     <script>
         // --- CẤU HÌNH & TRẠNG THÁI ---
         const config = { password: '22082007', password2: 'oke =))', likeTarget: 22080, gameWinScore: 100 };
-        const state = { energy: 100, choseHemFirst: false, assistantAvailable: false, assistantUsed: false, viewedClouds: 0 };
+        const state = { energy: 100, choseHemFirst: false, assistantAvailable: false, assistantUsed: false, viewedClouds: 0, readyForMemoriesPop: false };
 
         // --- HÀM TIỆN ÍCH ---
         const getEl = (id) => document.getElementById(id);
@@ -385,40 +401,33 @@
             });
         };
 
-        function showNewspapers() {
+        async function showNewspapers() {
             const newspapersContainer = document.querySelector('.newspapers');
             newspapersContainer.classList.remove('hidden');
             const titles = [
-                'CHẤN ĐỘNG: THÀNH VIÊN MỚI LỘ DIỆN!',
-                'HOT NEWS: AI LÀ MẢNH GHÉP THỨ 8?',
-                'BREAKING: BTS SẮP CÓ ĐỘI HÌNH MỚI?',
-                'ĐỘC QUYỀN: HÌNH ẢNH ĐẦU TIÊN CỦA "TÂN BINH"!',
-                'ARMY DẬY SÓNG VÌ THÀNH VIÊN BÍ ẨN!'
+                'ĐỘC QUYỀN: Mảnh ghép thứ 8 của BTS là ai?',
+                'CÚ NỔ TRUYỀN THÔNG: Big Hit xác nhận đội hình mới!',
+                'CHÀO ĐÓN TÂN BINH: Một kỷ nguyên mới sắp bắt đầu!',
+                'CỘNG ĐỒNG ARMY DẬY SÓNG: Visual này quá đỉnh!',
+                'BREAKING NEWS: Cả thế giới nín thở chờ đợi màn ra mắt!'
             ];
-            
-            for (let i = 0; i < 15; i++) {
+            const delay = ms => new Promise(res => setTimeout(res, ms));
+
+            for (const title of titles) {
                 const np = document.createElement('div');
-                const styleClass = `style-${Math.floor(Math.random() * 3) + 2}`; // style-2, style-3, style-4
-                np.className = `newspaper ${styleClass}`;
-
-                const isDiagonal = i < 10; // 10 tờ đầu bay chéo
-                const startX = isDiagonal ? (Math.random() > 0.5 ? -150 : 150) : -150;
-                const startY = isDiagonal ? `${Math.random() * 100 - 50}vh` : `${Math.random() * 40 - 20}vh`;
-                const endX = `${Math.random() * 80 - 40}vw`;
-                const endY = `${Math.random() * 60 - 30}vh`;
-
-                np.style.setProperty('--x-start', startX + 'vw');
-                np.style.setProperty('--y-start', startY);
-                np.style.setProperty('--x-end', endX);
-                np.style.setProperty('--y-end', endY);
-                np.style.setProperty('--rotation', `${Math.random() * 40 - 20}deg`);
-                np.innerHTML = `<h3>${titles[i % titles.length]}</h3><p>BTS RA MẮT THÀNH VIÊN THỨ 8!</p>`;
+                np.className = 'newspaper';
+                np.innerHTML = `<h3>${title}</h3><p>Tất cả các trang báo lớn đều đồng loạt đưa tin...</p>`;
                 newspapersContainer.appendChild(np);
+                await delay(3000); // Wait for animation to complete
+                newspapersContainer.innerHTML = ''; // Clear for the next one
             }
+            
+            newspapersContainer.style.transition = 'opacity 1s'; 
+            newspapersContainer.style.opacity = 0;
             setTimeout(() => {
-                newspapersContainer.style.transition = 'opacity 1s'; newspapersContainer.style.opacity = 0;
-                fadeTransition('', 'newspaper-wall');
-            }, 3000);
+                 newspapersContainer.classList.add('hidden');
+                 fadeTransition('', 'newspaper-wall');
+            }, 1000);
         }
         
         getEl('view-main-news').onclick = () => {
@@ -437,41 +446,48 @@
                 { a: '🐯', c: 'Wow a này đzai thế' }, { a: '🐵', c: 'Anh ơi em quạt anh 🥰' },
                 { a: '🦊', c: 'Đzai quá a ơi' }, { a: '🐷', c: 'Anh này vô BTS là quá chuẩn r' },
                 { a: '🐰', c: 'Wow 🤩🤩🤩' }, { a: '🐨', c: 'ko ngo2f trên đời có ng đẹp z lun á 😊' },
-                { a: '🐻', c: 'Ngầu đét 😎😎😎' }, { a: '🐼', c: 'Wow a này đzai thế' },
+                { a: '🐻', c: 'Trời ơi, tan chảy...' }, { a: '🐼', c: 'Visual này không đùa được đâu!'},
+                { a: '🐱', c: 'Anh ơi em yêu anh ❤❤❤' }
             ];
-            const specialComment = { a: '🐱', c: 'Anh ơi em yêu anh ❤❤❤' };
+            comments.sort(() => Math.random() - 0.5);
+
+            const positions = [
+                { top: '15%', left: '10%', busy: false }, { top: '20%', left: '55%', busy: false },
+                { top: '40%', left: '5%', busy: false },  { top: '55%', left: '50%', busy: false },
+                { top: '65%', left: '15%', busy:false }, { top: '80%', left: '60%', busy: false }
+            ];
+
+            let commentIndex = 0;
             
-            comments.push(specialComment);
-            comments.sort(() => Math.random() - 0.5); // Xáo trộn tất cả comment
+            function createComment() {
+                if (commentIndex >= comments.length) return;
 
-            let usedLanes = [];
-            const createComment = (comment, delay) => {
-                 setTimeout(() => {
-                    const commentEl = document.createElement('div');
-                    commentEl.className = 'fan-comment';
-                    
-                    let lane;
-                    do {
-                        lane = Math.floor(Math.random() * 4); // 4 lanes
-                    } while (usedLanes.includes(lane));
-                    
-                    usedLanes.push(lane);
-                    if (usedLanes.length > 2) {
-                        usedLanes.shift(); // Keep track of recent lanes to avoid overlap
-                    }
+                let availablePositions = positions.filter(p => !p.busy);
+                if (availablePositions.length === 0) {
+                     setTimeout(createComment, 1500);
+                     return;
+                }
 
-                    commentEl.style.left = `${5 + lane * 22}%`;
-                    commentEl.innerHTML = `<span class="avatar">${comment.a}</span><span>${comment.c}</span>`;
-                    overlay.appendChild(commentEl);
-                    setTimeout(() => commentEl.remove(), 4000); // Remove after animation
-                }, delay);
+                const position = availablePositions[Math.floor(Math.random() * availablePositions.length)];
+                position.busy = true;
+
+                const comment = comments[commentIndex];
+                const commentEl = document.createElement('div');
+                commentEl.className = 'fan-comment';
+                commentEl.style.top = position.top;
+                commentEl.style.left = position.left;
+                commentEl.innerHTML = `<span class="avatar">${comment.a}</span><span>${comment.c}</span>`;
+                overlay.appendChild(commentEl);
+                
+                setTimeout(() => {
+                    commentEl.remove();
+                    position.busy = false;
+                }, 7000);
+
+                commentIndex++;
+                setTimeout(createComment, 2200 + Math.random() * 1000);
             }
-            
-            let initialDelay = 500;
-            comments.forEach(c => {
-                createComment(c, initialDelay);
-                initialDelay += Math.random() * 1000 + 500;
-            });
+            createComment();
         }
 
         function animateLikes(target) {
@@ -516,14 +532,26 @@
             btn.style.top = `${Math.random() * (parent.height - btn.offsetHeight)}px`;
             btn.style.left = `${Math.random() * (parent.width - btn.offsetWidth)}px`;
         });
+        
+        function handlePhotoViewerClose() {
+            closeModal('photo-viewer', () => {
+                if (state.readyForMemoriesPop) {
+                    showModal('memories-pop');
+                    state.readyForMemoriesPop = false; 
+                }
+            });
+        }
+        
         document.querySelectorAll('.cloud').forEach(cloud => {
             cloud.onclick = () => {
-                getEl('memory-photo').src = cloud.dataset.photo; showModal('photo-viewer');
+                getEl('memory-photo').src = cloud.dataset.photo; 
+                showModal('photo-viewer');
                 if (!cloud.classList.contains('viewed')) {
-                    cloud.classList.add('viewed'); cloud.style.opacity = '0.6';
+                    cloud.classList.add('viewed'); 
+                    cloud.style.opacity = '0.6';
                     state.viewedClouds++;
                     if (state.viewedClouds === 4) {
-                        setTimeout(() => showModal('memories-pop'), 1000);
+                        state.readyForMemoriesPop = true;
                     }
                 }
             }
